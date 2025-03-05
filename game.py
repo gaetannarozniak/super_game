@@ -39,19 +39,16 @@ class Game:
 
     def left_click(self, click_pos, turn):
         x_tile, y_tile = self.map.get_tile(click_pos[0], click_pos[1])
-<<<<<<< HEAD
         clicked_character = self.map.tiles[x_tile][y_tile].get_character()
-        if clicked_character is not None and clicked_character.get_team() == self.teams[turn]:
+        if clicked_character is None or clicked_character.get_team() == self.teams[turn]:
             self.selected_character = clicked_character
         print(self.selected_character)
-=======
-        self.selected_character = self.map.tiles[x_tile][y_tile].get_character()
->>>>>>> d39052d (deux couleurs de joueurs)
 
     def right_click(self, click_pos):
         x_tile, y_tile = self.map.get_tile(click_pos[0], click_pos[1])
         if self.selected_character is not None:
             self.selected_character.move_tile(self.map.tiles[x_tile][y_tile])
+            self.selected_character = None
     
     def change_turn(self):
         self.selected_character = None
