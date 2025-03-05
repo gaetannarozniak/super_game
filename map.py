@@ -95,8 +95,15 @@ class Map:
     def get_tile(self, click_x, click_y):
         return click_x // TILE_SIZE, click_y // TILE_SIZE
     
-    def generate_character(self, team):
-        x, y = random.randint(0, N_TILES_X-1), random.randint(0, N_TILES_Y-1)
-        if self.tiles[x][y].get_character() is not None:
-            return
-        self.tiles[x][y].set_character(Miner(self.tiles[x][y], team))
+    def generate_character(self, teams, click_x, click_y):
+        clicked_tile_x, clicked_tile_y = self.get_tile(click_x, click_y)
+        if (clicked_tile_x, clicked_tile_y) == (1, 1):
+            x, y = random.randint(0, N_TILES_X-1), random.randint(0, N_TILES_Y-1)
+            if self.tiles[x][y].get_character() is not None:
+                return
+            self.tiles[x][y].set_character(Miner(self.tiles[x][y], teams[0]))
+        elif (clicked_tile_x, clicked_tile_y) == (N_TILES_X-2, N_TILES_Y-2):
+            x, y = random.randint(0, N_TILES_X-1), random.randint(0, N_TILES_Y-1)
+            if self.tiles[x][y].get_character() is not None:
+                return
+            self.tiles[x][y].set_character(Miner(self.tiles[x][y], teams[1]))

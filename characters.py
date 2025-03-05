@@ -17,7 +17,10 @@ class Character:
         self.tile = future_tile
 
     def draw(self, screen, x, y):
-        pygame.draw.circle(screen, (255, 0, 0), (x * TILE_SIZE + TILE_SIZE // 2, y * TILE_SIZE + TILE_SIZE // 2), TILE_SIZE // 3)
+        if self.team.name == "Red":
+            pygame.draw.circle(screen, (255, 0, 0), (x * TILE_SIZE + TILE_SIZE // 2, y * TILE_SIZE + TILE_SIZE // 2), TILE_SIZE // 3)
+        elif self.team.name == "Blue":
+            pygame.draw.circle(screen, (0, 0, 255), (x * TILE_SIZE + TILE_SIZE // 2, y * TILE_SIZE + TILE_SIZE // 2), TILE_SIZE // 3)
 
     def set_team(self, team):
         self.team = team
