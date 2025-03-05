@@ -13,6 +13,7 @@ class Game:
         running = True
         while running:
             for event in pygame.event.get():
+                self.map.generate_character(self.teams[0])
                 if event.type == pygame.QUIT:
                     running = False
                 if event.type == pygame.MOUSEBUTTONDOWN:

@@ -1,27 +1,22 @@
-from terrains import Terrain
+from terrains import Terrain, IMAGES_TERRAINS
+from characters import Character, Miner
 import pygame
 import random
 
 TILE_SIZE = 40
 N_TILES_X, N_TILES_Y = 30, 20
 
-List_images = ["grass", "base", "gold"]
-IMAGES = {key: pygame.image.load(f"images/{key}.png") for key in List_images}
-for key in IMAGES:
-    IMAGES[key] = pygame.transform.scale(IMAGES[key], (TILE_SIZE, TILE_SIZE))
-
 class Tile:
-    def __init__(self, x, y, screen, terrain:Terrain = Terrain("grass"), character=None):
-        self.screen = screen
+    def __init__(self, x, y, terrain:Terrain = Terrain("grass"), character:Character=None):
         self.x = x
         self.y = y
         self.character = character
         self.terrain = terrain
 
-    def draw(self):
-        self.screen.blit(IMAGES["grass"], (self.x * TILE_SIZE, self.y * TILE_SIZE))
-        if self.terrain.get_terrain_type() != "grass":
-            self.screen.blit(IMAGES[self.terrain.get_terrain_type()], (self.x * TILE_SIZE, self.y * TILE_SIZE))
+    def draw(self, screen):
+        self.terrain.draw(screen, self.x, self.y)
+        if self.character is not None:
+            self.character.draw(screen, self.x, self.y)
 
     def get_terrain(self):
         return self.terrain
@@ -37,7 +32,7 @@ class Tile:
             raise ValueError(f"there is no character to remove in the tile ({self.x}, {self.y})")
         self.character = None
 
-    def set_character(self, character):
+    def set_character(self, character:Character):
         if self.character is not None:
             raise ValueError(f"there is already a character in the tile ({self.x}, {self.y})")
         self.character = character
@@ -51,6 +46,7 @@ class Map:
         self.screen = pygame.display.set_mode((N_TILES_X * TILE_SIZE, N_TILES_Y * TILE_SIZE))
         self.nb_gold = (N_TILES_X * N_TILES_Y) // 20 
         self.tiles = self.generate_map()
+        self.selected_character = None
     
     def generate_map(self, distance_base=4, group_sizes=[2,3]):
         # generate the map, 
@@ -88,12 +84,12 @@ class Map:
                     tiles_type[px][py] = "gold"
                     golds += 1
 
-        return [[Tile(x,y,self.screen,Terrain(tiles_type[x][y])) for y in range(N_TILES_Y)] for x in range(N_TILES_X)] 
+        return [[Tile(x,y,Terrain(tiles_type[x][y])) for y in range(N_TILES_Y)] for x in range(N_TILES_X)] 
 
     def left_click(self, click_pos):
         x_tile, y_tile = self.get_tile(click_pos[0], click_pos[1])
         self.selected_character = self.tiles[x_tile][y_tile].get_character()
-
+        print(self.selected_character)
     
     def right_click(self, click_pos):
         x_tile, y_tile = self.get_tile(click_pos[0], click_pos[1])
@@ -104,8 +100,14 @@ class Map:
         self.screen.fill((0,0,0))
         for x in range(N_TILES_X):
             for y in range(N_TILES_Y):
-                self.tiles[x][y].draw() 
+                self.tiles[x][y].draw(self.screen)
         pygame.display.flip()   
 
     def get_tile(self, click_x, click_y):
         return click_x // TILE_SIZE, click_y // TILE_SIZE
+    
+    def generate_character(self, team):
+        x, y = random.randint(0, N_TILES_X-1), random.randint(0, N_TILES_Y-1)
+        if self.tiles[x][y].get_character() is not None:
+            return
+        self.tiles[x][y].set_character(Miner(self.tiles[x][y], team))

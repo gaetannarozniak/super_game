@@ -1,7 +1,9 @@
-from map import Tile
+import pygame
+
+TILE_SIZE = 40
 
 class Character:
-    def __init__(self, name, tile: Tile, speed:int, team):
+    def __init__(self, name, tile, team, speed:int):
         self.name = name
         self.tile = tile
         self.speed = speed
@@ -13,9 +15,15 @@ class Character:
         self.tile.remove_character() 
         future_tile.set_character(self)
 
+    def draw(self, screen, x, y):
+        pygame.draw.circle(screen, (255, 0, 0), (x * TILE_SIZE + TILE_SIZE // 2, y * TILE_SIZE + TILE_SIZE // 2), TILE_SIZE // 3)
+
+    def set_team(self, team):
+        self.team = team
+
 class Miner(Character):
-    def __init__(self, name, tile: Tile):
-        super().__init__(name, tile, speed=2)
+    def __init__(self, tile, team):
+        super().__init__(name = "miner", tile=tile, team=team, speed=5)
 
 
     
