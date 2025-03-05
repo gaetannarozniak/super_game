@@ -53,26 +53,47 @@ class Tile:
 class Map:
     def __init__(self):
         self.screen = pygame.display.set_mode((N_TILES_X * TILE_SIZE, N_TILES_Y * TILE_SIZE))
+        self.nb_gold = (N_TILES_X * N_TILES_Y) // 20 
+        self.tiles = self.generate_map()
+    
+    def generate_map(self, distance_base=4, group_sizes=[2,3]):
+        # generate the map, 
+        # distance_base is the minimum distance between the bases and the golds,
+        # group_sizes is the number of golds in a group
         tiles_type = [["GRASS" for y in range(N_TILES_Y)] for x in range(N_TILES_X)] 
-        self.nb_base = 2
-        self.nb_gold = (N_TILES_X * N_TILES_Y) // 10 
-
-        bases = 0
-        while bases < self.nb_base:
-            x, y = random.randint(0, N_TILES_X-1), random.randint(0, N_TILES_Y-1)
-            if tiles_type[x][y] == "GRASS":
-                tiles_type[x][y] = "BASE"
-                bases += 1
+        tiles_type[1][1] = "BASE"
+        tiles_type[-2][-2] = "BASE"
         
         golds = 0
         while golds < self.nb_gold:
             x, y = random.randint(0, N_TILES_X-1), random.randint(0, N_TILES_Y-1)
-            if tiles_type[x][y] == "GRASS":
-                tiles_type[x][y] = "GOLD"
-                golds += 1
+            if tiles_type[x][y] != "GRASS":
+                continue  
+            
+            #not too close to the bases
+            if abs(x - 1) + abs(y - 1) <= distance_base or abs(x - N_TILES_X + 2) + abs(y - N_TILES_Y + 2) <= distance_base:
+                continue
+            
+            group_size = random.choice(group_sizes)
+            positions = [(x, y)]
 
-        self.tiles = [[Tile(x,y,self.screen,Terrain(tiles_type[x][y])) for y in range(N_TILES_Y)] for x in range(N_TILES_X)] 
+            directions = [(0,1), (1,0), (0,-1), (-1,0)]
+            random.shuffle(directions)  
+            
+            for dx, dy in directions:
+                if len(positions) >= group_size:
+                    break
+                nx, ny = x + dx, y + dy
+                if 0 <= nx < N_TILES_X and 0 <= ny < N_TILES_Y and tiles_type[nx][ny] == "GRASS":
+                    positions.append((nx, ny))
 
+            if len(positions) == group_size:
+                for px, py in positions:
+                    tiles_type[px][py] = "GOLD"
+                    golds += 1
+
+        return [[Tile(x,y,self.screen,Terrain(tiles_type[x][y])) for y in range(N_TILES_Y)] for x in range(N_TILES_X)] 
+        
     def draw(self):
         self.screen.fill((0,0,0))
         for x in range(N_TILES_X):
