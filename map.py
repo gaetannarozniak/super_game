@@ -1,5 +1,4 @@
 from terrains import Terrain
-from math import abs
 import pygame
 import random
 
@@ -37,16 +36,13 @@ class Tile:
     
     def get_character(self):
         return self.character
-    
-    def set_character(self, character):
-        self.character = character
 
     def remove_character(self):
         if self.character is None:
             raise ValueError(f"there is no character to remove in the tile ({self.x}, {self.y})")
         self.character = None
 
-    def add_character(self, character):
+    def set_character(self, character):
         if self.character is not None:
             raise ValueError(f"there is already a character in the tile ({self.x}, {self.y})")
         self.character = character

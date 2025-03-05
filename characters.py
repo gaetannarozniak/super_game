@@ -10,7 +10,7 @@ class Character:
         if self.tile.tile_dist(future_tile) > self.speed:
             return ValueError(f"impossible to move: the two tiles are too far away {self.speed = } < {self.tile_dist(future_tile)}")
         self.tile.remove_character() 
-        future_tile.add_character(self)
+        future_tile.set_character(self)
 
 class Miner(Character):
     def __init__(self, name, tile: Tile):
