@@ -50,6 +50,7 @@ class Tile:
     def tile_dist(self, other_tile):
         return abs(self.x - other_tile.x) + abs(self.y - other_tile.y)
 
+
 class Map:
     def __init__(self):
         self.screen = pygame.display.set_mode((N_TILES_X * TILE_SIZE, N_TILES_Y * TILE_SIZE))
@@ -61,8 +62,16 @@ class Map:
         # distance_base is the minimum distance between the bases and the golds,
         # group_sizes is the number of golds in a group
         tiles_type = [["GRASS" for y in range(N_TILES_Y)] for x in range(N_TILES_X)] 
-        tiles_type[1][1] = "BASE"
-        tiles_type[-2][-2] = "BASE"
+        self.nb_base = 2
+        self.nb_gold = (N_TILES_X * N_TILES_Y) // 10 
+        self.selected_character = None # Character selected with the mouse
+
+        bases = 0
+        while bases < self.nb_base:
+            x, y = random.randint(0, N_TILES_X-1), random.randint(0, N_TILES_Y-1)
+            if tiles_type[x][y] == "GRASS":
+                tiles_type[x][y] = "BASE"
+                bases += 1
         
         golds = 0
         while golds < self.nb_gold:
@@ -93,6 +102,16 @@ class Map:
                     golds += 1
 
         return [[Tile(x,y,self.screen,Terrain(tiles_type[x][y])) for y in range(N_TILES_Y)] for x in range(N_TILES_X)] 
+
+    def left_click(self, click_pos):
+        x_tile, y_tile = self.get_tile(click_pos[0], click_pos[1])
+        self.selected_character = self.tiles[x_tile][y_tile].get_character()
+
+    
+    def right_click(self, click_pos):
+        x_tile, y_tile = self.get_tile(click_pos[0], click_pos[1])
+        if self.selected_character is not None:
+            self.selected_character.move_tile(self.tiles[x_tile][y_tile])
         
     def draw(self):
         self.screen.fill((0,0,0))

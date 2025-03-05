@@ -10,10 +10,11 @@ def run():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            elif event.type == pygame.MOUSEBUTTONDOWN:  # Clic de souris
-                click_x, click_y = event.pos
-                x, y = map.get_tile(click_x, click_y)
-                print(x,y)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:  # Left Click
+                    map.left_click(event.pos)
+                elif event.button == 3:  # Right Click
+                    map.right_click(event.pos)
 
         map.draw()
     
