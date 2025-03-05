@@ -15,3 +15,5 @@ class Team:
         self.characters.remove(character)
         character.set_team(None)
 
+    def get_name(self):
+        return self.name
