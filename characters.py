@@ -1,12 +1,12 @@
-from map import Position
+from map import Tile
 
 class Character:
-    def __init__(self, name, pos: Position):
+    def __init__(self, name, pos: Tile):
         self.name = name
         self.pos = pos
 
 class Miner(Character):
-    def __init__(self, name, pos: Position):
+    def __init__(self, name, pos: Tile):
         super().__init__(name, pos)
         self.gold = 0
 
