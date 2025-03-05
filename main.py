@@ -1,7 +1,7 @@
 from game import Game
 
-N_TEAMS = 2
+TEAMS = ["Red", "Blue"]
 
 if __name__ == "__main__":
-    game = Game(N_TEAMS)
+    game = Game(TEAMS)
     game.run()

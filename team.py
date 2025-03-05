@@ -1,6 +1,7 @@
 class Team:
-    def __init__(self):
+    def __init__(self, name):
         self.characters = []
+        self.name = name
 
     def add_character(self, character):
         if character in self.characters:

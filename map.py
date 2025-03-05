@@ -46,7 +46,6 @@ class Map:
         self.screen = pygame.display.set_mode((N_TILES_X * TILE_SIZE, N_TILES_Y * TILE_SIZE))
         self.nb_gold = (N_TILES_X * N_TILES_Y) // 20 
         self.tiles = self.generate_map()
-        self.selected_character = None
     
     def generate_map(self, distance_base=4, group_sizes=[2,3]):
         # generate the map, 
@@ -85,16 +84,6 @@ class Map:
                     golds += 1
 
         return [[Tile(x,y,Terrain(tiles_type[x][y])) for y in range(N_TILES_Y)] for x in range(N_TILES_X)] 
-
-    def left_click(self, click_pos):
-        x_tile, y_tile = self.get_tile(click_pos[0], click_pos[1])
-        self.selected_character = self.tiles[x_tile][y_tile].get_character()
-        print(self.selected_character)
-    
-    def right_click(self, click_pos):
-        x_tile, y_tile = self.get_tile(click_pos[0], click_pos[1])
-        if self.selected_character is not None:
-            self.selected_character.move_tile(self.tiles[x_tile][y_tile])
         
     def draw(self):
         self.screen.fill((0,0,0))
