@@ -1,13 +1,10 @@
 from terrains import Terrain
-<<<<<<< HEAD
 from math import abs
-=======
 import pygame
 import random
 
 TILE_SIZE = 40
 N_TILES_X, N_TILES_Y = 30, 20
->>>>>>> ff9e8dc (creation map)
 
 class Tile:
     def __init__(self, x, y, screen, terrain:Terrain = Terrain("GRASS"), character=None):
@@ -49,12 +46,12 @@ class Tile:
             raise ValueError(f"there is no character to remove in the tile ({self.x}, {self.y})")
         self.character = None
 
-    def add_character(self, character:Character):
+    def add_character(self, character):
         if self.character is not None:
             raise ValueError(f"there is already a character in the tile ({self.x}, {self.y})")
         self.character = character
 
-    def tile_dist(self, other_tile:Tile):
+    def tile_dist(self, other_tile):
         return abs(self.x - other_tile.x) + abs(self.y - other_tile.y)
 
 class Map:
