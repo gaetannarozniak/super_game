@@ -1,10 +1,11 @@
 from map import Tile
 
 class Character:
-    def __init__(self, name, tile: Tile, speed:int):
+    def __init__(self, name, tile: Tile, speed:int, team):
         self.name = name
         self.tile = tile
         self.speed = speed
+        self.team = team 
 
     def move_tile(self, future_tile):
         if self.tile.tile_dist(future_tile) > self.speed:
