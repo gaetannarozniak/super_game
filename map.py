@@ -56,23 +56,9 @@ class Map:
         # generate the map, 
         # distance_base is the minimum distance between the bases and the golds,
         # group_sizes is the number of golds in a group
-<<<<<<< HEAD
-        tiles_type = [["GRASS" for y in range(N_TILES_Y)] for x in range(N_TILES_X)] 
-        self.nb_base = 2
-        self.nb_gold = (N_TILES_X * N_TILES_Y) // 10 
-        self.selected_character = None # Character selected with the mouse
-
-        bases = 0
-        while bases < self.nb_base:
-            x, y = random.randint(0, N_TILES_X-1), random.randint(0, N_TILES_Y-1)
-            if tiles_type[x][y] == "GRASS":
-                tiles_type[x][y] = "BASE"
-                bases += 1
-=======
         tiles_type = [["grass" for y in range(N_TILES_Y)] for x in range(N_TILES_X)] 
         tiles_type[1][1] = "base"
         tiles_type[-2][-2] = "base"
->>>>>>> 40b1e6b (images gestion)
         
         golds = 0
         while golds < self.nb_gold:
