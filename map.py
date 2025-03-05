@@ -5,28 +5,23 @@ import random
 TILE_SIZE = 40
 N_TILES_X, N_TILES_Y = 30, 20
 
+List_images = ["grass", "base", "gold"]
+IMAGES = {key: pygame.image.load(f"images/{key}.png") for key in List_images}
+for key in IMAGES:
+    IMAGES[key] = pygame.transform.scale(IMAGES[key], (TILE_SIZE, TILE_SIZE))
+
 class Tile:
-    def __init__(self, x, y, screen, terrain:Terrain = Terrain("GRASS"), character=None):
+    def __init__(self, x, y, screen, terrain:Terrain = Terrain("grass"), character=None):
         self.screen = screen
         self.x = x
         self.y = y
         self.character = character
         self.terrain = terrain
 
-        self.images = {
-            "GRASS": pygame.image.load("images/grass.png"),
-            "BASE": pygame.image.load("images/base.png"),
-            "GOLD": pygame.image.load("images/gold.png")
-        }
-
-        for key in self.images:
-            self.images[key] = pygame.transform.scale(self.images[key], (TILE_SIZE, TILE_SIZE))
-
-
     def draw(self):
-        self.screen.blit(self.images["GRASS"], (self.x * TILE_SIZE, self.y * TILE_SIZE))
-        if self.terrain.get_terrain_type() != "GRASS":
-            self.screen.blit(self.images[self.terrain.get_terrain_type()], (self.x * TILE_SIZE, self.y * TILE_SIZE))
+        self.screen.blit(IMAGES["grass"], (self.x * TILE_SIZE, self.y * TILE_SIZE))
+        if self.terrain.get_terrain_type() != "grass":
+            self.screen.blit(IMAGES[self.terrain.get_terrain_type()], (self.x * TILE_SIZE, self.y * TILE_SIZE))
 
     def get_terrain(self):
         return self.terrain
@@ -61,6 +56,7 @@ class Map:
         # generate the map, 
         # distance_base is the minimum distance between the bases and the golds,
         # group_sizes is the number of golds in a group
+<<<<<<< HEAD
         tiles_type = [["GRASS" for y in range(N_TILES_Y)] for x in range(N_TILES_X)] 
         self.nb_base = 2
         self.nb_gold = (N_TILES_X * N_TILES_Y) // 10 
@@ -72,11 +68,16 @@ class Map:
             if tiles_type[x][y] == "GRASS":
                 tiles_type[x][y] = "BASE"
                 bases += 1
+=======
+        tiles_type = [["grass" for y in range(N_TILES_Y)] for x in range(N_TILES_X)] 
+        tiles_type[1][1] = "base"
+        tiles_type[-2][-2] = "base"
+>>>>>>> 40b1e6b (images gestion)
         
         golds = 0
         while golds < self.nb_gold:
             x, y = random.randint(0, N_TILES_X-1), random.randint(0, N_TILES_Y-1)
-            if tiles_type[x][y] != "GRASS":
+            if tiles_type[x][y] != "grass":
                 continue  
             
             #not too close to the bases
@@ -93,12 +94,12 @@ class Map:
                 if len(positions) >= group_size:
                     break
                 nx, ny = x + dx, y + dy
-                if 0 <= nx < N_TILES_X and 0 <= ny < N_TILES_Y and tiles_type[nx][ny] == "GRASS":
+                if 0 <= nx < N_TILES_X and 0 <= ny < N_TILES_Y and tiles_type[nx][ny] == "grass":
                     positions.append((nx, ny))
 
             if len(positions) == group_size:
                 for px, py in positions:
-                    tiles_type[px][py] = "GOLD"
+                    tiles_type[px][py] = "gold"
                     golds += 1
 
         return [[Tile(x,y,self.screen,Terrain(tiles_type[x][y])) for y in range(N_TILES_Y)] for x in range(N_TILES_X)] 
