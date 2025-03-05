@@ -1,4 +1,7 @@
-from game import run
+from game import Game
+
+N_TEAMS = 2
 
 if __name__ == "__main__":
-    run()
+    game = Game(N_TEAMS)
+    game.run()
