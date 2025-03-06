@@ -1,5 +1,5 @@
 from terrains import Terrain
-from characters import Entity, Miner
+from entities import Entity, Miner
 import pygame
 import random
 from config import N_TILES_X, N_TILES_Y, TILE_SIZE 

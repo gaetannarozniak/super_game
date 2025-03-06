@@ -4,7 +4,7 @@ from team import Team
 from display_game import DisplayGame
 import pygame
 from config import FPS
-from characters import Character
+from entities import Character
 
 class Game:
     def __init__(self, list_teams):

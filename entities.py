@@ -59,3 +59,4 @@ class Base(Entity):
         base_image = pygame.image.load("images/base.png")
         base_image_scaled = pygame.transform.scale(base_image, (TILE_SIZE, TILE_SIZE))
         figure.blit(base_image_scaled, (x*TILE_SIZE, y*TILE_SIZE)) 
+        print("drawing base")
