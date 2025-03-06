@@ -1,3 +1,8 @@
+# to see the class dependencies structure
+# pip install pyreverse
+# pyreverse -o png ../super_game .
+# the result is in the packages.png file
+
 from game import Game
 from config import TEAMS    
 
