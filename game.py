@@ -8,7 +8,7 @@ from config import FPS
 class Game:
     def __init__(self, list_teams):
         self.map = Map()
-        self.menu = Menu()
+        self.menu = Menu(self.change_turn)
         self.display_game = DisplayGame(self.map, self.menu)
         self.teams = [Team(name) for name in list_teams]
         self.selected_character = None
@@ -33,8 +33,7 @@ class Game:
                         elif event.button == 3:  # Right Click
                             self.right_click(click_x, click_y)
                     elif surface == "menu":
-                        if self.menu.click(click_x, click_y):
-                            self.change_turn()
+                        self.menu.click(click_x, click_y)
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_n:
