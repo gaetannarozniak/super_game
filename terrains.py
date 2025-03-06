@@ -1,6 +1,6 @@
 import pygame
 
-TERRAINS = ["grass", "base", "gold"]
+from config import TILE_SIZE, TERRAINS
 IMAGES_TERRAINS = {key: pygame.image.load(f"images/{key}.png") for key in TERRAINS}
 
 class Terrain:
@@ -10,8 +10,8 @@ class Terrain:
     def get_terrain_type(self):
         return self.terrain_type
     
-    def draw(self, screen, x, y, parameters, accessible=False):
-        tile_size = parameters.get_tile_size()
+    def draw(self, screen, x, y, accessible=False):
+        tile_size = TILE_SIZE
         screen.blit(pygame.transform.scale(IMAGES_TERRAINS["grass"], (tile_size, tile_size)), (x * tile_size, y * tile_size))
         if self.terrain_type != "grass":
             screen.blit(pygame.transform.scale(IMAGES_TERRAINS[self.terrain_type], (tile_size, tile_size)), (x * tile_size, y * tile_size))

@@ -1,4 +1,5 @@
 import pygame
+from config import TILE_SIZE
 
 class Character:
     def __init__(self, name, tile, team, speed:int):
@@ -16,12 +17,21 @@ class Character:
         self.tile = future_tile
         self.moved = True
 
-    def draw(self, screen, x, y, parameters):
-        tile_size = parameters.get_tile_size()
+    def draw(self, screen, x, y):
+        tile_size = TILE_SIZE
         if self.team.name == "Red":
             pygame.draw.circle(screen, (255, 0, 0), (x * tile_size + tile_size // 2, y * tile_size + tile_size // 2), tile_size // 3)
         elif self.team.name == "Blue":
             pygame.draw.circle(screen, (0, 0, 255), (x * tile_size + tile_size // 2, y * tile_size + tile_size // 2), tile_size // 3)
+
+    # def accessible_tiles(self): 
+    #     accessible_tiles = []
+    #     for x in range(self.parameters.get_n_tiles_x()):
+    #         for y in range(self.parameters.get_n_tiles_y()):
+    #             if self.tiles[x][y].get_character() is None and selected_character.tile.tile_dist(self.tiles[x][y]) <= speed:
+    #                 accessible_tiles.append((x, y))
+
+
 
     def set_team(self, team):
         self.team = team

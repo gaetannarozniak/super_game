@@ -1,8 +1,7 @@
 from map import Map
 from team import Team
 import pygame
-
-FPS = 60
+from config import FPS
 
 class Game:
     def __init__(self, list_teams):

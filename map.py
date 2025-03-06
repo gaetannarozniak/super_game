@@ -2,7 +2,7 @@ from terrains import Terrain
 from characters import Character, Miner
 import pygame
 import random
-from parameters import Parameters
+from config import N_TILES_X, N_TILES_Y, TILE_SIZE, MIN_WINDOW_WIDTH 
 
 class Tile:
     def __init__(self, x, y, terrain:Terrain = Terrain("grass"), character:Character=None):
@@ -11,10 +11,10 @@ class Tile:
         self.character = character
         self.terrain = terrain
 
-    def draw(self, screen, parameters, accessible=False):
-        self.terrain.draw(screen, self.x, self.y, parameters, accessible)
+    def draw(self, screen, accessible=False):
+        self.terrain.draw(screen, self.x, self.y, accessible)
         if self.character is not None:
-            self.character.draw(screen, self.x, self.y, parameters)
+            self.character.draw(screen, self.x, self.y)
 
     def get_terrain(self):
         return self.terrain
@@ -41,29 +41,28 @@ class Tile:
 
 class Map:
     def __init__(self):
-        self.parameters = Parameters()
-        self.screen = pygame.display.set_mode((self.parameters.get_n_tiles_x() * self.parameters.get_tile_size(), self.parameters.get_n_tiles_y() * self.parameters.get_tile_size()))
+        self.screen = pygame.display.set_mode((N_TILES_X * TILE_SIZE, N_TILES_Y * TILE_SIZE))
         pygame.font.init()
         self.font = pygame.font.Font(None, 36)
-        self.nb_gold = (self.parameters.get_n_tiles_x() * self.parameters.get_n_tiles_y()) // 10
+        self.nb_gold = (N_TILES_X * N_TILES_Y) // 10
         self.tiles = self.generate_map()
     
     def generate_map(self, distance_base=4, group_sizes=[2,3]):
         # generate the map, 
         # distance_base is the minimum distance between the bases and the golds,
         # group_sizes is the number of golds in a group
-        tiles_type = [["grass" for y in range(self.parameters.get_n_tiles_y())] for x in range(self.parameters.get_n_tiles_x())] 
+        tiles_type = [["grass" for y in range(N_TILES_Y)] for x in range(N_TILES_X)] 
         tiles_type[1][1] = "base"
         tiles_type[-2][-2] = "base"
         
         golds = 0
         while golds < self.nb_gold:
-            x, y = random.randint(0, self.parameters.get_n_tiles_x()-1), random.randint(0, self.parameters.get_n_tiles_y()-1)
+            x, y = random.randint(0, N_TILES_X-1), random.randint(0, N_TILES_Y-1)
             if tiles_type[x][y] != "grass":
                 continue  
             
             #not too close to the bases
-            if abs(x - 1) + abs(y - 1) <= distance_base or abs(x - self.parameters.get_n_tiles_x() + 2) + abs(y - self.parameters.get_n_tiles_y() + 2) <= distance_base:
+            if abs(x - 1) + abs(y - 1) <= distance_base or abs(x - N_TILES_X + 2) + abs(y - N_TILES_Y + 2) <= distance_base:
                 continue
             
             group_size = random.choice(group_sizes)
@@ -76,7 +75,7 @@ class Map:
                 if len(positions) >= group_size:
                     break
                 nx, ny = x + dx, y + dy
-                if 0 <= nx < self.parameters.get_n_tiles_x() and 0 <= ny < self.parameters.get_n_tiles_y() and tiles_type[nx][ny] == "grass":
+                if 0 <= nx < N_TILES_X and 0 <= ny < N_TILES_Y and tiles_type[nx][ny] == "grass":
                     positions.append((nx, ny))
 
             if len(positions) == group_size:
@@ -84,50 +83,50 @@ class Map:
                     tiles_type[px][py] = "gold"
                     golds += 1
 
-        return [[Tile(x,y,Terrain(tiles_type[x][y])) for y in range(self.parameters.get_n_tiles_y())] for x in range(self.parameters.get_n_tiles_x())] 
+        return [[Tile(x,y,Terrain(tiles_type[x][y])) for y in range(N_TILES_Y)] for x in range(N_TILES_X)] 
         
     def draw(self, selected_character, team):
         speed = selected_character.get_speed() if selected_character is not None else 0
         accessible_tiles = []
         if selected_character is not None:
-            for x in range(self.parameters.get_n_tiles_x()):
-                for y in range(self.parameters.get_n_tiles_y()):
+            for x in range(N_TILES_X):
+                for y in range(N_TILES_Y):
                     if self.tiles[x][y].get_character() is None and selected_character.tile.tile_dist(self.tiles[x][y]) <= speed:
                         accessible_tiles.append((x, y))
 
         self.screen.fill((255,255,255))
-        for x in range(self.parameters.get_n_tiles_x()):
-            for y in range(self.parameters.get_n_tiles_y()):
-                self.tiles[x][y].draw(self.screen, self.parameters, (x, y) in accessible_tiles)
+        for x in range(N_TILES_X):
+            for y in range(N_TILES_Y):
+                self.tiles[x][y].draw(self.screen, (x, y) in accessible_tiles)
         gold_text = self.font.render(f"Gold: {team.get_gold()}, Nb_characters: {len(team.characters)}", True, (0, 0, 0))
         self.screen.blit(gold_text, (10, 10))  # Position en haut à gauche
 
         pygame.display.flip()   
 
     def get_tile(self, click_x, click_y):
-        return click_x // self.parameters.get_tile_size(), click_y // self.parameters.get_tile_size()
+        return click_x // TILE_SIZE, click_y // TILE_SIZE
     
     def generate_character(self, teams, click_x, click_y):
         clicked_tile_x, clicked_tile_y = self.get_tile(click_x, click_y)
         if (clicked_tile_x, clicked_tile_y) == (1, 1):
-            x, y = random.randint(0, self.parameters.get_n_tiles_x()-1), random.randint(0, self.parameters.get_n_tiles_y()-1)
+            x, y = random.randint(0, N_TILES_X-1), random.randint(0, N_TILES_Y-1)
             if self.tiles[x][y].get_character() is not None:
                 return
             self.tiles[x][y].set_character(Miner(self.tiles[x][y], teams[0]))
             teams[0].add_character(self.tiles[x][y].get_character())
             teams[0].gold -= 100
 
-        elif (clicked_tile_x, clicked_tile_y) == (self.parameters.get_n_tiles_x()-2, self.parameters.get_n_tiles_y()-2):
-            x, y = random.randint(0, self.parameters.get_n_tiles_x()-1), random.randint(0, self.parameters.get_n_tiles_y()-1)
+        elif (clicked_tile_x, clicked_tile_y) == (N_TILES_X-2, N_TILES_Y-2):
+            x, y = random.randint(0, N_TILES_X-1), random.randint(0, N_TILES_Y-1)
             if self.tiles[x][y].get_character() is not None:
                 return
             self.tiles[x][y].set_character(Miner(self.tiles[x][y], teams[1]))
             teams[1].add_character(self.tiles[x][y].get_character())
             teams[1].gold -= 100
 
-    def modify_window_size(self, WINDOW_WIDTH, WINDOW_HEIGHT):
-        WINDOW_WIDTH = max(WINDOW_WIDTH, self.parameters.get_min_window_width())
-        WINDOW_HEIGHT = max(WINDOW_HEIGHT, self.parameters.get_min_window_height())
-        tile_size = min(WINDOW_WIDTH // self.parameters.get_n_tiles_x(), WINDOW_HEIGHT // self.parameters.get_n_tiles_y())
-        self.parameters.set_tile_size(tile_size)
-        self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+    # def modify_window_size(self, WINDOW_WIDTH, WINDOW_HEIGHT):
+    #     WINDOW_WIDTH = max(WINDOW_WIDTH, self.parameters.get_min_window_width())
+    #     WINDOW_HEIGHT = max(WINDOW_HEIGHT, self.parameters.get_min_window_height())
+    #     tile_size = min(WINDOW_WIDTH // N_TILES_X, WINDOW_HEIGHT // N_TILES_Y)
+    #     self.parameters.set_tile_size(tile_size)
+    #     self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
