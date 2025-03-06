@@ -25,14 +25,14 @@ class Game:
                     running = False
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    click_x, click_y = event.pos
-                    click_x, click_y = self.display_game.click_map(click_x, click_y)
-                    self.map.generate_character(self.teams, click_x, click_y)
-                    if event.button == 1:  # Left Click
-                        self.left_click(click_x, click_y, self.turn)
-                    elif event.button == 3:  # Right Click
-                        self.right_click(click_x, click_y)
-
+                    surface, click_x, click_y = self.display_game.find_surface(event.pos)
+                    if surface == "map":
+                        self.map.generate_character(self.teams, click_x, click_y)
+                        if event.button == 1:  # Left Click
+                            self.left_click(click_x, click_y, self.turn)
+                        elif event.button == 3:  # Right Click
+                            self.right_click(click_x, click_y)
+                        
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_n:
                         self.change_turn()  

@@ -12,6 +12,7 @@ class DisplayGame:
         self.font = pygame.font.Font(None, 36)
 
         self.menu_surface = pygame.Surface((MENU_WIDTH, SCREEN_HEIGHT))
+        self.menu_rect = self.screen.blit(self.menu_surface, (0, 0))
 
         self.map_surface = pygame.Surface((MAP_WIDTH, MAP_HEIGHT)) 
         self.map_rect = self.screen.blit(self.map_surface, (MENU_WIDTH, 0))
@@ -23,7 +24,9 @@ class DisplayGame:
         self.screen.blit(self.menu_surface, (0, 0))
         self.screen.blit(self.map_surface, (MENU_WIDTH, 0))
 
-        pygame.display.flip() 
+        pygame.display.flip()
 
-    def click_map(self, x, y):
-        return x - self.map_rect.x, y - self.map_rect.y
+    def find_surface(self, pos):
+        if self.map_rect.collidepoint(pos):
+            return "map", pos[0] - self.map_rect.x, pos[1] - self.map_rect.y
+        return "menu", pos[0] - self.menu_rect.x, pos[1] - self.menu_rect.y
