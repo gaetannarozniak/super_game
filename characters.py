@@ -24,15 +24,6 @@ class Character:
         elif self.team.name == "Blue":
             pygame.draw.circle(screen, (0, 0, 255), (x * tile_size + tile_size // 2, y * tile_size + tile_size // 2), tile_size // 3)
 
-    # def accessible_tiles(self): 
-    #     accessible_tiles = []
-    #     for x in range(self.parameters.get_n_tiles_x()):
-    #         for y in range(self.parameters.get_n_tiles_y()):
-    #             if self.tiles[x][y].get_character() is None and selected_character.tile.tile_dist(self.tiles[x][y]) <= speed:
-    #                 accessible_tiles.append((x, y))
-
-
-
     def set_team(self, team):
         self.team = team
 
