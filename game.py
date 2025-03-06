@@ -1,13 +1,15 @@
 from map import Map
+from menu import Menu
 from team import Team
 from display_game import DisplayGame
-from config import FPS
 import pygame
+from config import FPS
 
 class Game:
     def __init__(self, list_teams):
         self.map = Map()
-        self.display_game = DisplayGame(self.map)
+        self.menu = Menu()
+        self.display_game = DisplayGame(self.map, self.menu)
         self.teams = [Team(name) for name in list_teams]
         self.selected_character = None
         self.turn = 0
@@ -21,6 +23,7 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
+
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     click_x, click_y = event.pos
                     click_x, click_y = self.display_game.click_map(click_x, click_y)
@@ -29,12 +32,13 @@ class Game:
                         self.left_click(click_x, click_y, self.turn)
                     elif event.button == 3:  # Right Click
                         self.right_click(click_x, click_y)
+
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_n:
                         self.change_turn()  
-            
+
             self.display_game.display(self.selected_character, self.teams[self.turn])
-            clock.tick(FPS) 
+            clock.tick(FPS)
         
         pygame.quit()
 
