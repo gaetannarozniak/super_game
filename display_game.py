@@ -1,27 +1,28 @@
 import pygame
-
-SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
-MENU_WIDTH = 200
-MAP_WIDTH = SCREEN_WIDTH - MENU_WIDTH  # Largeur de la carte
-MAP_HEIGHT = SCREEN_HEIGHT  # Hauteur de la carte
-
-WHITE = (255, 255, 255)
-GRAY = (100, 100, 100)
-GREEN = (50, 200, 50)
-GOLD = (255, 215, 0)
-BLUE = (50, 50, 200)
+from config import SCREEN_WIDTH, SCREEN_HEIGHT, MENU_WIDTH, MAP_WIDTH, MAP_HEIGHT
 
 class DisplayGame:
     def __init__(self, map):
         self.map = map
-        self.screen = pygame.display.set_mode((self.parameters.get_n_tiles_x() * self.parameters.get_tile_size(), self.parameters.get_n_tiles_y() * self.parameters.get_tile_size()))
-        
+        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pygame.font.init()
         self.font = pygame.font.Font(None, 36)
+        self.menu_surface = pygame.Surface((MENU_WIDTH, SCREEN_HEIGHT))
+        self.menu_surface.fill((100, 100, 100))
+        self.menu_surface.blit(self.font.render("Menu", True, (0,0,0)), (MENU_WIDTH // 2 - 36, 50))
+        self.map_surface = pygame.Surface((MAP_WIDTH, MAP_HEIGHT)) 
+        self.map_rect = self.screen.blit(self.map_surface, (MENU_WIDTH, 0))
 
+    def display(self, selected_character, team):
+        self.map.draw(self.map_surface, selected_character)
 
-    def display(self):
-        menu_surface = pygame.Surface((MENU_WIDTH, SCREEN_HEIGHT))
-        menu_surface.fill(GRAY)
+        gold_text = self.font.render(f"Gold: {team.get_gold()}, Nb_characters: {len(team.characters)}", True, (0, 0, 0))
+        self.map_surface.blit(gold_text, (10, 10))  # Position en haut à gauche
 
-        map_surface = pygame.Surface((MAP_WIDTH, MAP_HEIGHT))  # La carte occupe le reste
+        self.screen.blit(self.menu_surface, (0, 0))
+        self.screen.blit(self.map_surface, (MENU_WIDTH, 0))
+
+        pygame.display.flip() 
+
+    def click_map(self, x, y):
+        return x - self.map_rect.x, y - self.map_rect.y

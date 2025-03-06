@@ -1,18 +1,19 @@
 from map import Map
 from team import Team
-import pygame
+from display_game import DisplayGame
 from config import FPS
+import pygame
 
 class Game:
     def __init__(self, list_teams):
         self.map = Map()
+        self.display_game = DisplayGame(self.map)
         self.teams = [Team(name) for name in list_teams]
         self.selected_character = None
         self.turn = 0
 
     def run(self):
         pygame.init()
-        pygame.font.init()
         pygame.display.set_caption(self.teams[self.turn].get_name())    
         clock = pygame.time.Clock()
         running = True
@@ -22,33 +23,29 @@ class Game:
                     running = False
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     click_x, click_y = event.pos
+                    click_x, click_y = self.display_game.click_map(click_x, click_y)
                     self.map.generate_character(self.teams, click_x, click_y)
                     if event.button == 1:  # Left Click
-                        self.left_click(event.pos, self.turn)
+                        self.left_click(click_x, click_y, self.turn)
                     elif event.button == 3:  # Right Click
-                        self.right_click(event.pos)
+                        self.right_click(click_x, click_y)
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_n:
                         self.change_turn()  
-
-                if event.type == pygame.VIDEORESIZE:
-                    WINDOW_WIDTH, WINDOW_HEIGHT = event.w, event.h
-                    self.map.modify_window_size(WINDOW_WIDTH, WINDOW_HEIGHT)
-
-            self.map.draw(self.selected_character, self.teams[self.turn])
-            clock.tick(FPS)
-            pygame.display.flip()  
+            
+            self.display_game.display(self.selected_character, self.teams[self.turn])
+            clock.tick(FPS) 
         
         pygame.quit()
 
-    def left_click(self, click_pos, turn):
-        x_tile, y_tile = self.map.get_tile(click_pos[0], click_pos[1])
+    def left_click(self, click_x, click_y, turn):
+        x_tile, y_tile = self.map.get_tile(click_x, click_y)
         clicked_character = self.map.tiles[x_tile][y_tile].get_character()
         if clicked_character is None or (clicked_character.get_team() == self.teams[turn] and clicked_character.moved == False):
             self.selected_character = clicked_character
 
-    def right_click(self, click_pos):
-        x_tile, y_tile = self.map.get_tile(click_pos[0], click_pos[1])
+    def right_click(self, click_x, click_y):
+        x_tile, y_tile = self.map.get_tile(click_x, click_y)
         if self.selected_character is not None:
             self.selected_character.move_tile(self.map.tiles[x_tile][y_tile])
             self.selected_character = None

@@ -2,7 +2,7 @@ from terrains import Terrain
 from characters import Character, Miner
 import pygame
 import random
-from config import N_TILES_X, N_TILES_Y, TILE_SIZE, MIN_WINDOW_WIDTH 
+from config import N_TILES_X, N_TILES_Y, TILE_SIZE 
 
 class Tile:
     def __init__(self, x, y, terrain:Terrain = Terrain("grass"), character:Character=None):
@@ -41,8 +41,6 @@ class Tile:
 
 class Map:
     def __init__(self):
-        pygame.font.init()
-        self.font = pygame.font.Font(None, 36)
         self.nb_gold = (N_TILES_X * N_TILES_Y) // 10
         self.tiles = self.generate_map()
     
@@ -84,7 +82,7 @@ class Map:
 
         return [[Tile(x,y,Terrain(tiles_type[x][y])) for y in range(N_TILES_Y)] for x in range(N_TILES_X)] 
         
-    def draw(self, screen, selected_character, team):
+    def draw(self, screen, selected_character):
         speed = selected_character.get_speed() if selected_character is not None else 0
         accessible_tiles = []
         if selected_character is not None:
@@ -96,11 +94,7 @@ class Map:
         screen.fill((255,255,255))
         for x in range(N_TILES_X):
             for y in range(N_TILES_Y):
-                self.tiles[x][y].draw(screen, (x, y) in accessible_tiles)
-        gold_text = self.font.render(f"Gold: {team.get_gold()}, Nb_characters: {len(team.characters)}", True, (0, 0, 0))
-        screen.blit(gold_text, (10, 10))  # Position en haut à gauche
-
-        pygame.display.flip()   
+                self.tiles[x][y].draw(screen, (x, y) in accessible_tiles) 
 
     def get_tile(self, click_x, click_y):
         return click_x // TILE_SIZE, click_y // TILE_SIZE
@@ -122,10 +116,3 @@ class Map:
             self.tiles[x][y].set_character(Miner(self.tiles[x][y], teams[1]))
             teams[1].add_character(self.tiles[x][y].get_character())
             teams[1].gold -= 100
-
-    # def modify_window_size(self, WINDOW_WIDTH, WINDOW_HEIGHT):
-    #     WINDOW_WIDTH = max(WINDOW_WIDTH, self.parameters.get_min_window_width())
-    #     WINDOW_HEIGHT = max(WINDOW_HEIGHT, self.parameters.get_min_window_height())
-    #     tile_size = min(WINDOW_WIDTH // N_TILES_X, WINDOW_HEIGHT // N_TILES_Y)
-    #     self.parameters.set_tile_size(tile_size)
-    #     self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
