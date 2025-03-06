@@ -83,13 +83,10 @@ class Map:
         return [[Tile(x,y,Terrain(tiles_type[x][y])) for y in range(N_TILES_Y)] for x in range(N_TILES_X)] 
         
     def draw(self, screen, selected_character):
-        speed = selected_character.get_speed() if selected_character is not None else 0
         accessible_tiles = []
         if selected_character is not None:
-            for x in range(N_TILES_X):
-                for y in range(N_TILES_Y):
-                    if self.tiles[x][y].get_character() is None and selected_character.tile.tile_dist(self.tiles[x][y]) <= speed:
-                        accessible_tiles.append((x, y))
+            speed = selected_character.get_speed() 
+            accessible_tiles = self.get_accessible_tiles(selected_character.get_tile(), speed)
 
         for x in range(N_TILES_X):
             for y in range(N_TILES_Y):
@@ -97,6 +94,14 @@ class Map:
 
     def get_tile(self, click_x, click_y):
         return click_x // TILE_SIZE, click_y // TILE_SIZE
+
+    def get_accessible_tiles(self, tile, speed):
+        accessible_tiles = []
+        for x in range(N_TILES_X):
+            for y in range(N_TILES_Y):
+                if self.tiles[x][y].get_character() is None and tile.tile_dist(self.tiles[x][y]) <= speed:
+                    accessible_tiles.append((x, y))
+        return accessible_tiles
     
     def generate_character(self, teams, click_x, click_y):
         clicked_tile_x, clicked_tile_y = self.get_tile(click_x, click_y)

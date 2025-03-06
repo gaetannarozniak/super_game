@@ -32,6 +32,9 @@ class Character:
 
     def get_team(self):
         return self.team
+
+    def get_tile(self):
+        return self.tile
     
     def get_speed(self):
         return self.speed
