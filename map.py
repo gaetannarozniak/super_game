@@ -91,7 +91,6 @@ class Map:
                     if self.tiles[x][y].get_character() is None and selected_character.tile.tile_dist(self.tiles[x][y]) <= speed:
                         accessible_tiles.append((x, y))
 
-        screen.fill((255,255,255))
         for x in range(N_TILES_X):
             for y in range(N_TILES_Y):
                 self.tiles[x][y].draw(screen, (x, y) in accessible_tiles) 
