@@ -41,7 +41,6 @@ class Tile:
 
 class Map:
     def __init__(self):
-        self.screen = pygame.display.set_mode((N_TILES_X * TILE_SIZE, N_TILES_Y * TILE_SIZE))
         pygame.font.init()
         self.font = pygame.font.Font(None, 36)
         self.nb_gold = (N_TILES_X * N_TILES_Y) // 10
@@ -85,7 +84,7 @@ class Map:
 
         return [[Tile(x,y,Terrain(tiles_type[x][y])) for y in range(N_TILES_Y)] for x in range(N_TILES_X)] 
         
-    def draw(self, selected_character, team):
+    def draw(self, screen, selected_character, team):
         speed = selected_character.get_speed() if selected_character is not None else 0
         accessible_tiles = []
         if selected_character is not None:
@@ -94,12 +93,12 @@ class Map:
                     if self.tiles[x][y].get_character() is None and selected_character.tile.tile_dist(self.tiles[x][y]) <= speed:
                         accessible_tiles.append((x, y))
 
-        self.screen.fill((255,255,255))
+        screen.fill((255,255,255))
         for x in range(N_TILES_X):
             for y in range(N_TILES_Y):
-                self.tiles[x][y].draw(self.screen, (x, y) in accessible_tiles)
+                self.tiles[x][y].draw(screen, (x, y) in accessible_tiles)
         gold_text = self.font.render(f"Gold: {team.get_gold()}, Nb_characters: {len(team.characters)}", True, (0, 0, 0))
-        self.screen.blit(gold_text, (10, 10))  # Position en haut à gauche
+        screen.blit(gold_text, (10, 10))  # Position en haut à gauche
 
         pygame.display.flip()   
 
