@@ -3,7 +3,7 @@ from menu import Menu
 from team import Team
 from display_game import DisplayGame
 import pygame
-from config import FPS
+from config import FPS, N_TILES_X, N_TILES_Y
 from entities import Character
 
 class Game:
@@ -20,6 +20,8 @@ class Game:
         pygame.display.set_caption(self.teams[self.turn].get_name())    
         clock = pygame.time.Clock()
         running = True
+        self.create_base(2, 2, self.teams[0])
+        self.create_base(N_TILES_X-3, N_TILES_Y-3, self.teams[0])
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -48,8 +50,12 @@ class Game:
     def left_click(self, click_x, click_y, turn):
         x_tile, y_tile = self.map.get_tile(click_x, click_y)
         clicked_character = self.map.tiles[x_tile][y_tile].get_entity()
-        if clicked_character is None or (clicked_character.get_team() == self.teams[turn] and clicked_character.moved == False):
+        if (isinstance(clicked_character, Character) and 
+            clicked_character.moved == False and 
+            clicked_character.get_team()==self.teams[self.turn]):
             self.selected_character = clicked_character
+        else:
+            self.selected_character = None
 
     def right_click(self, click_x, click_y):
         x_tile, y_tile = self.map.get_tile(click_x, click_y)
@@ -64,3 +70,7 @@ class Game:
                 entity.moved = False
         self.turn = (self.turn+1) % len(self.teams)
         pygame.display.set_caption(self.teams[self.turn].get_name())    
+
+    def create_base(self, i_tile, j_tile, team):
+        tile = self.map.get_tile_ij(i_tile, j_tile)
+        team.create_base(tile)

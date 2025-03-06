@@ -93,6 +93,9 @@ class Map:
     def get_tile(self, click_x, click_y):
         return click_x // TILE_SIZE, click_y // TILE_SIZE
 
+    def get_tile_ij(self, i, j): 
+        return self.tiles[i][j]
+
     def get_accessible_tiles(self, tile, speed):
         accessible_tiles = []
         for x in range(N_TILES_X):

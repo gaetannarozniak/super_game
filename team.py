@@ -1,3 +1,5 @@
+from entities import Base
+
 class Team:
     def __init__(self, name):
         self.entities = []
@@ -14,6 +16,9 @@ class Team:
             return ValueError("the entity we want to remove from the team is not in the team")
         self.entities.remove(entity)
         entity.set_team(None)
+
+    def create_base(self, tile):
+        Base(tile, self)
 
     def get_name(self):
         return self.name
