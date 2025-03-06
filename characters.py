@@ -9,6 +9,9 @@ class Character:
         self.team = team
         self.moved = False
 
+        self.tile.set_character(self)
+        self.team.add_character(self)
+
     def move_tile(self, future_tile):
         if self.tile.tile_dist(future_tile) > self.speed:
             return ValueError(f"impossible to move: the two tiles are too far away {self.speed} < {self.tile.tile_dist(future_tile)}")

@@ -104,14 +104,12 @@ class Map:
             x, y = random.randint(0, N_TILES_X-1), random.randint(0, N_TILES_Y-1)
             if self.tiles[x][y].get_character() is not None:
                 return
-            self.tiles[x][y].set_character(Miner(self.tiles[x][y], teams[0]))
-            teams[0].add_character(self.tiles[x][y].get_character())
+            Miner(self.tiles[x][y], teams[0])
             teams[0].gold -= 100
 
         elif (clicked_tile_x, clicked_tile_y) == (N_TILES_X-2, N_TILES_Y-2):
             x, y = random.randint(0, N_TILES_X-1), random.randint(0, N_TILES_Y-1)
             if self.tiles[x][y].get_character() is not None:
                 return
-            self.tiles[x][y].set_character(Miner(self.tiles[x][y], teams[1]))
-            teams[1].add_character(self.tiles[x][y].get_character())
+            Miner(self.tiles[x][y], teams[1])
             teams[1].gold -= 100
