@@ -2,6 +2,7 @@ class Team:
     def __init__(self, name):
         self.characters = []
         self.name = name
+        self.gold = 1000
 
     def add_character(self, character):
         if character in self.characters:
@@ -17,3 +18,6 @@ class Team:
 
     def get_name(self):
         return self.name
+    
+    def get_gold(self):
+        return self.gold
