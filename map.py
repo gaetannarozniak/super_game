@@ -1,11 +1,11 @@
 from terrains import Terrain
-from characters import Character, Miner
+from characters import Entity, Miner
 import pygame
 import random
 from config import N_TILES_X, N_TILES_Y, TILE_SIZE 
 
 class Tile:
-    def __init__(self, x, y, terrain:Terrain = Terrain("grass"), character:Character=None):
+    def __init__(self, x, y, terrain:Terrain = Terrain("grass"), character:Entity=None):
         self.x = x
         self.y = y
         self.character = character
@@ -30,7 +30,7 @@ class Tile:
             raise ValueError(f"there is no character to remove in the tile ({self.x}, {self.y})")
         self.character = None
 
-    def set_character(self, character:Character):
+    def set_character(self, character:Entity):
         if self.character is not None:
             raise ValueError(f"there is already a character in the tile ({self.x}, {self.y})")
         self.character = character
