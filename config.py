@@ -1,7 +1,7 @@
 FPS: int = 60
 
 TEAMS = ["Red", "Blue"]
-TERRAINS = ["grass", "base", "gold"]
+TERRAINS = ["grass", "gold"]
 
 N_TILES_X = 30
 N_TILES_Y = 20

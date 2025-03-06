@@ -5,16 +5,16 @@ import random
 from config import N_TILES_X, N_TILES_Y, TILE_SIZE 
 
 class Tile:
-    def __init__(self, x, y, terrain:Terrain = Terrain("grass"), character:Entity=None):
+    def __init__(self, x, y, terrain:Terrain = Terrain("grass"), entity:Entity=None):
         self.x = x
         self.y = y
-        self.character = character
+        self.entity = entity
         self.terrain = terrain
 
-    def draw(self, screen, accessible=False):
-        self.terrain.draw(screen, self.x, self.y, accessible)
-        if self.character is not None:
-            self.character.draw(screen, self.x, self.y)
+    def draw(self, figure, accessible=False):
+        self.terrain.draw(figure, self.x, self.y, accessible)
+        if self.entity is not None:
+            self.entity.draw(figure, self.x, self.y)
 
     def get_terrain(self):
         return self.terrain
@@ -22,18 +22,18 @@ class Tile:
     def set_terrain(self, terrain):
         self.terrain = terrain
     
-    def get_character(self):
-        return self.character
+    def get_entity(self):
+        return self.entity
 
-    def remove_character(self):
-        if self.character is None:
-            raise ValueError(f"there is no character to remove in the tile ({self.x}, {self.y})")
-        self.character = None
+    def remove_entity(self):
+        if self.entity is None:
+            raise ValueError(f"there is no entity to remove in the tile ({self.x}, {self.y})")
+        self.entity = None
 
-    def set_character(self, character:Entity):
-        if self.character is not None:
-            raise ValueError(f"there is already a character in the tile ({self.x}, {self.y})")
-        self.character = character
+    def set_entity(self, entity:Entity):
+        if self.entity is not None:
+            raise ValueError(f"there is already an entity in the tile ({self.x}, {self.y})")
+        self.entity = entity
 
     def tile_dist(self, other_tile):
         return abs(self.x - other_tile.x) + abs(self.y - other_tile.y)
@@ -49,8 +49,6 @@ class Map:
         # distance_base is the minimum distance between the bases and the golds,
         # group_sizes is the number of golds in a group
         tiles_type = [["grass" for y in range(N_TILES_Y)] for x in range(N_TILES_X)] 
-        tiles_type[1][1] = "base"
-        tiles_type[-2][-2] = "base"
         
         golds = 0
         while golds < self.nb_gold:
@@ -82,7 +80,7 @@ class Map:
 
         return [[Tile(x,y,Terrain(tiles_type[x][y])) for y in range(N_TILES_Y)] for x in range(N_TILES_X)] 
         
-    def draw(self, screen, selected_character):
+    def draw(self, figure, selected_character):
         accessible_tiles = []
         if selected_character is not None:
             speed = selected_character.get_speed() 
@@ -90,7 +88,7 @@ class Map:
 
         for x in range(N_TILES_X):
             for y in range(N_TILES_Y):
-                self.tiles[x][y].draw(screen, (x, y) in accessible_tiles) 
+                self.tiles[x][y].draw(figure, (x, y) in accessible_tiles) 
 
     def get_tile(self, click_x, click_y):
         return click_x // TILE_SIZE, click_y // TILE_SIZE
@@ -99,7 +97,7 @@ class Map:
         accessible_tiles = []
         for x in range(N_TILES_X):
             for y in range(N_TILES_Y):
-                if self.tiles[x][y].get_character() is None and tile.tile_dist(self.tiles[x][y]) <= speed:
+                if self.tiles[x][y].get_entity() is None and tile.tile_dist(self.tiles[x][y]) <= speed:
                     accessible_tiles.append((x, y))
         return accessible_tiles
     
@@ -107,14 +105,14 @@ class Map:
         clicked_tile_x, clicked_tile_y = self.get_tile(click_x, click_y)
         if (clicked_tile_x, clicked_tile_y) == (1, 1):
             x, y = random.randint(0, N_TILES_X-1), random.randint(0, N_TILES_Y-1)
-            if self.tiles[x][y].get_character() is not None:
+            if self.tiles[x][y].get_entity() is not None:
                 return
             Miner(self.tiles[x][y], teams[0])
             teams[0].gold -= 100
 
         elif (clicked_tile_x, clicked_tile_y) == (N_TILES_X-2, N_TILES_Y-2):
             x, y = random.randint(0, N_TILES_X-1), random.randint(0, N_TILES_Y-1)
-            if self.tiles[x][y].get_character() is not None:
+            if self.tiles[x][y].get_entity() is not None:
                 return
             Miner(self.tiles[x][y], teams[1])
             teams[1].gold -= 100

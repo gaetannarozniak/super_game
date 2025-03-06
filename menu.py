@@ -10,7 +10,7 @@ class Menu:
 
     def draw(self, surface, font, team):
         surface.fill(self.background_color)
-        gold_text = font.render(f"Gold: {team.get_gold()}, Nb_characters: {len(team.characters)}", True, (0, 0, 0))
+        gold_text = font.render(f"Gold: {team.get_gold()}, Nb entities: {len(team.entities)}", True, (0, 0, 0))
         surface.blit(gold_text, (10, 10))  # Position en haut à gauche
         for button in self.button_list:
             button.draw(surface, font)
