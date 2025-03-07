@@ -3,16 +3,15 @@
 # pyreverse -o png ../super_game .
 # the result is in the packages.png file
 
-from game import Game
-from config import TEAMS  
 import pygame
 import sys  
+from scene_gestion import SceneGestion
 
 
 if __name__ == "__main__":
-    game = Game(TEAMS)
+    scene_gestion = SceneGestion()
     try:
-        game.run()
+        scene_gestion.run()
     except Exception as e:
         print(f"Une erreur est survenue : {e}")
     finally:

@@ -2,14 +2,11 @@ import pygame
 from config import SCREEN_WIDTH, SCREEN_HEIGHT, MENU_WIDTH, MAP_WIDTH, MAP_HEIGHT
 
 class DisplayGame:
-    def __init__(self, map, menu):
+    def __init__(self, map, menu, screen, font):
         self.map = map
         self.menu = menu
-
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-
-        pygame.font.init()
-        self.font = pygame.font.Font(None, 36)
+        self.screen = screen
+        self.font = font
 
         self.menu_surface = pygame.Surface((MENU_WIDTH, SCREEN_HEIGHT))
         self.map_surface = pygame.Surface((MAP_WIDTH, MAP_HEIGHT)) 
@@ -19,9 +16,9 @@ class DisplayGame:
             "map": pygame.Rect(MENU_WIDTH, 0, MAP_WIDTH, SCREEN_HEIGHT)
         }
 
-    def display(self, selected_character, team):
+    def display(self, selected_character, teams, turn):
         self.map.draw(self.map_surface, selected_character)
-        self.menu.draw(self.menu_surface, self.font, team)
+        self.menu.draw(self.menu_surface, self.font, teams, turn)
 
         self.screen.blit(self.menu_surface, self.rect_dict["menu"].topleft)
         self.screen.blit(self.map_surface, self.rect_dict["map"].topleft)
