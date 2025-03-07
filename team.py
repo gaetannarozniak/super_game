@@ -1,4 +1,4 @@
-from entities import Base, Miner
+from entities import Base, Miner, Soldier
 
 class Team:
     def __init__(self, name, base_tile):
@@ -21,6 +21,10 @@ class Team:
     def buy_miner(self):
         self.gold -= 100
         Miner(self.base.tile, self)
+
+    def buy_soldier(self):
+        self.gold -= 200
+        Soldier(self.base.tile, self)
 
     def create_base(self, tile):
         return Base(tile, self)

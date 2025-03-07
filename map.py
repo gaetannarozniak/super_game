@@ -1,6 +1,5 @@
 from terrains import Terrain
-from entities import Entity, Character, Building, Miner
-import pygame
+from entities import Character, Building, Miner
 import random
 from config import N_TILES_X, N_TILES_Y, TILE_SIZE 
 

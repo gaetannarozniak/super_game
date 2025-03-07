@@ -3,13 +3,13 @@ from menu import Menu
 from team import Team
 from display_game import DisplayGame
 import pygame
-from config import FPS, N_TILES_X, N_TILES_Y
+from config import FPS
 from entities import Character
 
 class Game:
     def __init__(self, list_teams):
         self.map = Map()
-        self.menu = Menu(self.change_turn, self.buy_miner)
+        self.menu = Menu(self.change_turn, self.buy_miner, self.buy_soldier)
         self.display_game = DisplayGame(self.map, self.menu)
         base_tiles = self.map.get_base_tiles()
         self.teams = [Team(list_teams[i], base_tiles[i]) for i in range(len(list_teams))]
@@ -31,7 +31,7 @@ class Game:
                     if surface == "map":
                         self.map.generate_character(self.teams, click_x, click_y)
                         if event.button == 1:  # Left Click
-                            self.left_click(click_x, click_y, self.turn)
+                            self.left_click(click_x, click_y)
                         elif event.button == 3:  # Right Click
                             self.right_click(click_x, click_y)
                     elif surface == "menu":
@@ -46,7 +46,7 @@ class Game:
         
         pygame.quit()
 
-    def left_click(self, click_x, click_y, turn):
+    def left_click(self, click_x, click_y):
         x_tile, y_tile = self.map.get_tile(click_x, click_y)
         clicked_character = self.map.tiles[x_tile][y_tile].get_character()
         if (isinstance(clicked_character, Character) and 
@@ -72,3 +72,6 @@ class Game:
 
     def buy_miner(self):
         self.teams[self.turn].buy_miner()
+
+    def buy_soldier(self):
+        self.teams[self.turn].buy_soldier()

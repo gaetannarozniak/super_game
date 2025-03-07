@@ -2,19 +2,24 @@ import pygame
 from config import MENU_WIDTH
 
 class Menu:
-    def __init__(self, change_turn, buy_miner):
+    def __init__(self, change_turn, buy_miner, buy_soldier):
         self.background_color = (100, 100, 100)
         change_turn_button = Button(10, 200, MENU_WIDTH - 20,
                                           30, change_turn, text="End Turn")
         buy_miner_button = Button(10, 300, MENU_WIDTH - 20,
                                           30, buy_miner, text="Buy Miner")
+        
+        buy_soldier_button = Button(10, 400, MENU_WIDTH - 20,
+                                          30, buy_soldier, text="Buy Soldier")
                                   
-        self.button_list = [change_turn_button, buy_miner_button]
+        self.button_list = [change_turn_button, buy_miner_button, buy_soldier_button]
 
     def draw(self, surface, font, team):
         surface.fill(self.background_color)
-        gold_text = font.render(f"Gold: {team.get_gold()}, Nb entities: {len(team.entities)}", True, (0, 0, 0))
-        surface.blit(gold_text, (10, 10))  # Position en haut à gauche
+        gold_text = font.render(f"Gold: {team.get_gold()}", True, (0, 0, 0))
+        nb_entities_text = font.render(f"Nb entities: {len(team.entities) - 1}", True, (0, 0, 0))
+        surface.blit(gold_text, (10, 10))
+        surface.blit(nb_entities_text, (10, 50))
         for button in self.button_list:
             button.draw(surface, font)
 

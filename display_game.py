@@ -12,10 +12,7 @@ class DisplayGame:
         self.font = pygame.font.Font(None, 36)
 
         self.menu_surface = pygame.Surface((MENU_WIDTH, SCREEN_HEIGHT))
-        # self.menu_rect = self.screen.blit(self.menu_surface, (0, 0))
-
         self.map_surface = pygame.Surface((MAP_WIDTH, MAP_HEIGHT)) 
-        # self.map_rect = self.screen.blit(self.map_surface, (MENU_WIDTH, 0))
 
         self.rect_dict = {
             "menu": pygame.Rect(0, 0, MENU_WIDTH, SCREEN_HEIGHT),
