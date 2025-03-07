@@ -1,10 +1,10 @@
 import pygame
 from config import TILE_SIZE
 
-def load_images(prefix, string_list):
+def load_images(prefix, string_list, size_x = TILE_SIZE, size_y = TILE_SIZE):
     images = {key: pygame.image.load(f"images/{prefix}/{key}.png") for key in string_list}
     for key in images.keys():
-        images[key] = pygame.transform.scale(images[key], (TILE_SIZE, TILE_SIZE)) 
+        images[key] = pygame.transform.scale(images[key], (size_x, size_y)) 
     return images
 
 class Font:
