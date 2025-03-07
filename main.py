@@ -4,18 +4,18 @@
 # the result is in the packages.png file
 
 import pygame
-import sys  
+import sys
+import traceback  # Import the traceback module
 from scene_gestion import SceneGestion
-
 
 if __name__ == "__main__":
     scene_gestion = SceneGestion()
     try:
         scene_gestion.run()
     except Exception as e:
-        print(f"Une erreur est survenue : {e}")
+        print("Une erreur est survenue :")
+        traceback.print_exc()  # This prints the full stack trace
     finally:
-    # Ce bloc est toujours exécuté, même si une erreur se produit
         print("Fermeture propre de Pygame...")
         pygame.quit()
         sys.exit()  # Facultatif mais propre
