@@ -126,7 +126,7 @@ class Soldier(Character):
     
 class Base(Building):
     def __init__(self, tile, team):
-        super().__init__(tile=tile, team=team, life=2)
+        super().__init__(tile=tile, team=team, life=1)
 
     def draw(self, figure, x, y):
         base_image = pygame.image.load("images/base.png")

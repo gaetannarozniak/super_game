@@ -34,9 +34,10 @@ class Game:
                 self.change_turn()  
 
         self.display_game.display(self.selected_character, self.teams, self.turn)
-        for team in self.teams:
-            if team.get_life() == 0:
-                return True
+        if self.teams[0].get_life() == 0:
+            return "Blue"
+        elif self.teams[1].get_life() == 0:
+            return "Red"
         return False
 
     def left_click(self, click_x, click_y):

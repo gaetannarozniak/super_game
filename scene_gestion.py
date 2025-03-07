@@ -1,5 +1,6 @@
 from game import Game
 from home_page import HomePage
+from end_page import EndPage
 from config import TEAMS, FPS, SCREEN_WIDTH, SCREEN_HEIGHT
 from utils import Font
 
@@ -33,9 +34,11 @@ class SceneGestion:
             clock.tick(FPS)
 
     def change_scene(self, change):
-        if change:
-            if self.current_scene == self.home_page:
-                self.current_scene = Game(TEAMS, self.screen)
-            else:
-                self.current_scene = self.home_page
-        
+        if change == "game":
+            self.current_scene = Game(TEAMS, self.screen)
+        elif change == "Red":
+            self.current_scene = EndPage(self.screen, "Red")
+        elif change == "Blue":
+            self.current_scene = EndPage(self.screen, "Blue")
+        elif change == "home":
+            self.current_scene = self.home_page

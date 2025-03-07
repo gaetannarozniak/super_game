@@ -9,7 +9,7 @@ def load_images(prefix, string_list):
 
 class Font:
     _font = {}
-
+    
     @staticmethod
     def load():
         Font._font["small"] = pygame.font.Font(None, 15)
