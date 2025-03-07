@@ -119,21 +119,5 @@ class Map:
                     accessible_tiles.append((x, y))
         return accessible_tiles
     
-    def generate_character(self, teams, click_x, click_y):
-        clicked_tile_x, clicked_tile_y = self.get_tile(click_x, click_y)
-        if (clicked_tile_x, clicked_tile_y) == (1, 1):
-            x, y = random.randint(0, N_TILES_X-1), random.randint(0, N_TILES_Y-1)
-            if self.tiles[x][y].get_character() is not None:
-                return
-            Miner(self.tiles[x][y], teams[0])
-            teams[0].gold -= 100
-
-        elif (clicked_tile_x, clicked_tile_y) == (N_TILES_X-2, N_TILES_Y-2):
-            x, y = random.randint(0, N_TILES_X-1), random.randint(0, N_TILES_Y-1)
-            if self.tiles[x][y].get_character() is not None:
-                return
-            Miner(self.tiles[x][y], teams[1])
-            teams[1].gold -= 100
-    
     def get_base_tiles(self): # return the tiles of the teams base
         return [self.tiles[3][3], self.tiles[N_TILES_X-4][N_TILES_Y-4]]

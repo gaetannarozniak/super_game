@@ -29,7 +29,6 @@ class Game:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     surface, click_x, click_y = self.display_game.find_surface(event.pos)
                     if surface == "map":
-                        self.map.generate_character(self.teams, click_x, click_y)
                         if event.button == 1:  # Left Click
                             self.left_click(click_x, click_y)
                         elif event.button == 3:  # Right Click

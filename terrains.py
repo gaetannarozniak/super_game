@@ -17,7 +17,7 @@ class Terrain:
             figure.blit(IMAGES_TERRAINS[self.terrain_type], (x * TILE_SIZE, y * TILE_SIZE))
         if accessible:
             transparent = pygame.Surface((TILE_SIZE, TILE_SIZE))
-            transparent.set_alpha(95)
-            transparent.fill((50, 150, 50))
+            transparent.set_alpha(100)
+            transparent.fill((50, 50, 50))
             figure.blit(transparent, (x * TILE_SIZE, y * TILE_SIZE))
         
