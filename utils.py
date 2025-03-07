@@ -28,7 +28,13 @@ class Button:
         self.text = text
 
     def draw(self, surface, size):
-        pygame.draw.rect(surface, self.border_color, self.rect, 2)
+        if self.rect.collidepoint(pygame.mouse.get_pos()):
+            transparent = pygame.Surface((self.rect.width, self.rect.height), pygame.SRCALPHA)
+            pygame.draw.rect(transparent, (50, 50, 50, 100), (0, 0, self.rect.width, self.rect.height), border_radius=15)
+            surface.blit(transparent, (self.rect.x, self.rect.y))
+        pygame.draw.rect(surface, self.border_color, self.rect, 2, border_radius=15)
         text_surface = Font.render(self.text, size)
         text_rect = text_surface.get_rect(center=self.rect.center)
         surface.blit(text_surface, text_rect)
+
+        
