@@ -16,5 +16,8 @@ class Terrain:
         if self.terrain_type != "grass":
             figure.blit(IMAGES_TERRAINS[self.terrain_type], (x * TILE_SIZE, y * TILE_SIZE))
         if accessible:
-            pygame.draw.rect(figure, (0, 0, 0), (x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE), 1)
+            transparent = pygame.Surface((TILE_SIZE, TILE_SIZE))
+            transparent.set_alpha(95)
+            transparent.fill((50, 150, 50))
+            figure.blit(transparent, (x * TILE_SIZE, y * TILE_SIZE))
         
