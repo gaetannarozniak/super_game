@@ -6,6 +6,7 @@ from config import FPS
 from entities import Character
 
 import pygame
+import sys  
 
 class Game:
     def __init__(self, list_teams):
@@ -25,8 +26,8 @@ class Game:
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    running = False
-                    break
+                    pygame.quit()
+                    sys.exit()
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     surface, click_x, click_y = self.display_game.find_surface(event.pos)
@@ -44,8 +45,6 @@ class Game:
 
             self.display_game.display(self.selected_character, self.teams[self.turn])
             clock.tick(FPS)
-        
-        pygame.quit()
 
     def left_click(self, click_x, click_y):
         x_tile, y_tile = self.map.get_tile(click_x, click_y)

@@ -21,10 +21,10 @@ class Entity(ABC): # cannot instantiate abstract class Entity
         return self.tile
     
     def die(self):
-        self.tile.remove_character()
+        if self.tile.get_character() is not None:
+            self.tile.remove_character()
         self.team.remove_entity(self)
         del self
-
 
 class Character(Entity, ABC):
     def __init__(self, tile, team, speed):
@@ -38,7 +38,12 @@ class Character(Entity, ABC):
         if self.tile.tile_dist(future_tile) > self.speed:
             return ValueError(f"impossible to move: the two tiles are too far away {self.speed} < {self.tile.tile_dist(future_tile)}")
         self.tile.remove_character() 
-        self.interact(future_tile)
+        print(f"character moved from ({self.tile.x}, {self.tile.y}) to ({future_tile.x}, {future_tile.y})")
+        try:
+            self.interact(future_tile)
+        except SystemError as e:
+            if e.args[0] == "Die !":
+                return
         future_tile.set_character(self)
         self.tile = future_tile
         self.moved = True
@@ -87,6 +92,7 @@ class Soldier(Character):
             if isinstance(character, Soldier):
                 character.die()
                 self.die()
+                raise SystemError("Die !")
             else:
                 character.die()
             
