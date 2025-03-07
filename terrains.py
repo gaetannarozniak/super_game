@@ -11,6 +11,9 @@ class Terrain:
     def get_terrain_type(self):
         return self.terrain_type
     
+    def set_terrain_type(self, terrain_type):
+        self.terrain_type = terrain_type
+    
     def draw(self, figure, x, y, accessible=False):
         figure.blit(IMAGES_TERRAINS["grass"], (x * TILE_SIZE, y * TILE_SIZE))
         if self.terrain_type != "grass":

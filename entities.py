@@ -17,8 +17,10 @@ class Entity(ABC): # cannot instantiate abstract class Entity
     def get_tile(self):
         return self.tile
     
-    def get_speed(self):
-        return self.speed
+    def die(self):
+        self.tile.remove_character()
+        self.team.remove_entity(self)
+        del self
 
 
 class Character(Entity, ABC):
@@ -33,9 +35,13 @@ class Character(Entity, ABC):
         if self.tile.tile_dist(future_tile) > self.speed:
             return ValueError(f"impossible to move: the two tiles are too far away {self.speed} < {self.tile.tile_dist(future_tile)}")
         self.tile.remove_character() 
+        self.interact(future_tile)
         future_tile.set_character(self)
         self.tile = future_tile
         self.moved = True
+    
+    def get_speed(self):
+        return self.speed
 
 class Building(Entity, ABC):
     def __init__(self, tile, team):
@@ -45,7 +51,7 @@ class Building(Entity, ABC):
 
 class Miner(Character):
     def __init__(self, tile, team):
-        super().__init__(tile=tile, team=team, speed=3)
+        super().__init__(tile=tile, team=team, speed=30)
 
     def draw(self, figure, x, y):
         tile_size = TILE_SIZE
@@ -53,10 +59,15 @@ class Miner(Character):
             pygame.draw.circle(figure, (255, 0, 0), (x * tile_size + tile_size // 2, y * tile_size + tile_size // 2), tile_size // 3)
         elif self.team.name == "Blue":
             pygame.draw.circle(figure, (0, 0, 255), (x * tile_size + tile_size // 2, y * tile_size + tile_size // 2), tile_size // 3)
+    
+    def interact(self, tile):
+        if tile.get_terrain_type() == "gold":
+            tile.set_terrain_type("grass")
+            self.team.add_gold(100)
 
 class Soldier(Character):
     def __init__(self, tile, team):
-        super().__init__(tile=tile, team=team, speed=5)
+        super().__init__(tile=tile, team=team, speed=50)
 
     def draw(self, figure, x, y):
         tile_size = TILE_SIZE
@@ -65,6 +76,15 @@ class Soldier(Character):
         elif self.team.name == "Blue":
             pygame.draw.rect(figure, (0, 0, 255), (x * tile_size + tile_size // 4, y * tile_size + tile_size // 4, tile_size // 2, tile_size // 2))
 
+    def interact(self, tile):
+        character = tile.get_character()
+        if character is not None and character.get_team() != self.team:
+            if isinstance(character, Soldier):
+                character.die()
+                self.die()
+            else:
+                character.die()
+            
     
 class Base(Building):
     def __init__(self, tile, team):

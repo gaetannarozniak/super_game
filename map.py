@@ -34,7 +34,7 @@ class Tile:
 
     def set_character(self, character:Character):
         if self.character is not None:
-            raise ValueError(f"there is already an character in the tile ({self.x}, {self.y})")
+            raise ValueError(f"there is already a character in the tile ({self.x}, {self.y})")
         self.character = character
 
     def get_building(self):
@@ -52,6 +52,12 @@ class Tile:
 
     def tile_dist(self, other_tile):
         return abs(self.x - other_tile.x) + abs(self.y - other_tile.y)
+    
+    def get_terrain_type(self):
+        return self.terrain.get_terrain_type()
+    
+    def set_terrain_type(self, terrain_type):
+        self.terrain.set_terrain_type(terrain_type)
 
 
 class Map:

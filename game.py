@@ -2,9 +2,10 @@ from map import Map
 from menu import Menu
 from team import Team
 from display_game import DisplayGame
-import pygame
 from config import FPS
 from entities import Character
+
+import pygame
 
 class Game:
     def __init__(self, list_teams):
@@ -25,6 +26,7 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
+                    break
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     surface, click_x, click_y = self.display_game.find_surface(event.pos)

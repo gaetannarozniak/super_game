@@ -16,7 +16,6 @@ class Team:
         if entity not in self.entities:
             return ValueError("the entity we want to remove from the team is not in the team")
         self.entities.remove(entity)
-        entity.set_team(None)
 
     def buy_miner(self):
         self.gold -= 100
@@ -34,3 +33,6 @@ class Team:
     
     def get_gold(self):
         return self.gold
+    
+    def add_gold(self, gold):
+        self.gold += gold
