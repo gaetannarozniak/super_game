@@ -18,12 +18,14 @@ class Team:
         self.entities.remove(entity)
 
     def buy_miner(self):
-        self.gold -= 100
-        Miner(self.base.tile, self)
+        if self.gold >= 100:
+            self.gold -= 100
+            Miner(self.base.tile, self)
 
     def buy_soldier(self):
-        self.gold -= 200
-        Soldier(self.base.tile, self)
+        if self.gold >= 200:
+            self.gold -= 200
+            Soldier(self.base.tile, self)
 
     def create_base(self, tile):
         return Base(tile, self)
