@@ -5,7 +5,7 @@ class Team:
         self.entities = []
         self.name = name
         self.base = self.create_base(base_tile)
-        self.gold = 1000
+        self.gold = 200
 
     def add_entity(self, entity):
         if entity in self.entities:
@@ -38,3 +38,6 @@ class Team:
     
     def add_gold(self, gold):
         self.gold += gold
+
+    def get_life(self):
+        return self.base.get_life()

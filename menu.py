@@ -18,8 +18,10 @@ class Menu:
         surface.fill(self.background_color)
         gold_text = font.render(f"Gold: {team.get_gold()}", True, (0, 0, 0))
         nb_entities_text = font.render(f"Nb entities: {len(team.entities) - 1}", True, (0, 0, 0))
+        nb_life_text = font.render(f"Life: {team.get_life()}", True, (0, 0, 0))
         surface.blit(gold_text, (10, 10))
         surface.blit(nb_entities_text, (10, 50))
+        surface.blit(nb_life_text, (10, 100))
         for button in self.button_list:
             button.draw(surface, font)
 

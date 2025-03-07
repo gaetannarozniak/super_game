@@ -23,8 +23,9 @@ class Entity(ABC): # cannot instantiate abstract class Entity
     def die(self):
         if self.tile.get_character() is not None:
             self.tile.remove_character()
+        if self.tile.get_building() is not None:
+            self.tile.remove_building()
         self.team.remove_entity(self)
-        del self
 
 class Character(Entity, ABC):
     def __init__(self, tile, team, speed):
@@ -52,10 +53,19 @@ class Character(Entity, ABC):
         return self.speed
 
 class Building(Entity, ABC):
-    def __init__(self, tile, team):
+    def __init__(self, tile, team, life):
         super().__init__(tile, team)
         self.tile.set_building(self)
         self.team.add_entity(self)
+        self.life = life
+
+    def get_life(self):
+        return self.life
+    
+    def lose_life(self):
+        self.life -= 1
+        if self.life == 0:
+            self.die()
 
 class Miner(Character):
     def __init__(self, tile, team):
@@ -95,11 +105,16 @@ class Soldier(Character):
                 raise SystemError("Die !")
             else:
                 character.die()
+        building = tile.get_building()
+        if building is not None and building.get_team() != self.team:
+            building.lose_life()
+            self.die()
+            raise SystemError("Die !")
             
     
 class Base(Building):
     def __init__(self, tile, team):
-        super().__init__(tile=tile, team=team)
+        super().__init__(tile=tile, team=team, life=2)
 
     def draw(self, figure, x, y):
         base_image = pygame.image.load("images/base.png")
