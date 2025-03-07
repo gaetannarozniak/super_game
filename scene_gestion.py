@@ -14,7 +14,6 @@ class SceneGestion:
         pygame.display.set_caption("super game !")
 
         self.home_page = HomePage(self.screen)
-        self.game = Game(TEAMS, self.screen)
         self.current_scene = self.home_page
 
         Font.load()
@@ -36,7 +35,7 @@ class SceneGestion:
     def change_scene(self, change):
         if change:
             if self.current_scene == self.home_page:
-                self.current_scene = self.game
+                self.current_scene = Game(TEAMS, self.screen)
             else:
                 self.current_scene = self.home_page
         
