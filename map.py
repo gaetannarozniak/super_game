@@ -1,20 +1,23 @@
 from terrains import Terrain
-from entities import Entity, Miner
+from entities import Entity, Character, Building, Miner
 import pygame
 import random
 from config import N_TILES_X, N_TILES_Y, TILE_SIZE 
 
 class Tile:
-    def __init__(self, x, y, terrain:Terrain = Terrain("grass"), entity:Entity=None):
+    def __init__(self, x, y, terrain:Terrain = Terrain("grass")):
         self.x = x
         self.y = y
-        self.entity = entity
+        self.character = None
+        self.building = None
         self.terrain = terrain
 
     def draw(self, figure, accessible=False):
         self.terrain.draw(figure, self.x, self.y, accessible)
-        if self.entity is not None:
-            self.entity.draw(figure, self.x, self.y)
+        if self.building is not None:
+            self.building.draw(figure, self.x, self.y)
+        if self.character is not None:
+            self.character.draw(figure, self.x, self.y)
 
     def get_terrain(self):
         return self.terrain
@@ -22,18 +25,31 @@ class Tile:
     def set_terrain(self, terrain):
         self.terrain = terrain
     
-    def get_entity(self):
-        return self.entity
+    def get_character(self):
+        return self.character
 
-    def remove_entity(self):
-        if self.entity is None:
-            raise ValueError(f"there is no entity to remove in the tile ({self.x}, {self.y})")
-        self.entity = None
+    def remove_character(self):
+        if self.character is None:
+            raise ValueError(f"there is no character to remove in the tile ({self.x}, {self.y})")
+        self.character = None
 
-    def set_entity(self, entity:Entity):
-        if self.entity is not None:
-            raise ValueError(f"there is already an entity in the tile ({self.x}, {self.y})")
-        self.entity = entity
+    def set_character(self, character:Character):
+        if self.character is not None:
+            raise ValueError(f"there is already an character in the tile ({self.x}, {self.y})")
+        self.character = character
+
+    def get_building(self):
+        return self.building
+
+    def remove_building(self):
+        if self.building is None:
+            raise ValueError(f"there is no building to remove in the tile ({self.x}, {self.y})")
+        self.building = None
+
+    def set_building(self, building:Building):
+        if self.building is not None:
+            raise ValueError(f"there is already an building in the tile ({self.x}, {self.y})")
+        self.building = building
 
     def tile_dist(self, other_tile):
         return abs(self.x - other_tile.x) + abs(self.y - other_tile.y)
@@ -100,7 +116,7 @@ class Map:
         accessible_tiles = []
         for x in range(N_TILES_X):
             for y in range(N_TILES_Y):
-                if self.tiles[x][y].get_entity() is None and tile.tile_dist(self.tiles[x][y]) <= speed:
+                if self.tiles[x][y].get_character() is None and tile.tile_dist(self.tiles[x][y]) <= speed:
                     accessible_tiles.append((x, y))
         return accessible_tiles
     
@@ -108,14 +124,14 @@ class Map:
         clicked_tile_x, clicked_tile_y = self.get_tile(click_x, click_y)
         if (clicked_tile_x, clicked_tile_y) == (1, 1):
             x, y = random.randint(0, N_TILES_X-1), random.randint(0, N_TILES_Y-1)
-            if self.tiles[x][y].get_entity() is not None:
+            if self.tiles[x][y].get_character() is not None:
                 return
             Miner(self.tiles[x][y], teams[0])
             teams[0].gold -= 100
 
         elif (clicked_tile_x, clicked_tile_y) == (N_TILES_X-2, N_TILES_Y-2):
             x, y = random.randint(0, N_TILES_X-1), random.randint(0, N_TILES_Y-1)
-            if self.tiles[x][y].get_entity() is not None:
+            if self.tiles[x][y].get_character() is not None:
                 return
             Miner(self.tiles[x][y], teams[1])
             teams[1].gold -= 100

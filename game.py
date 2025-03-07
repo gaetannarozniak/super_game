@@ -48,7 +48,7 @@ class Game:
 
     def left_click(self, click_x, click_y, turn):
         x_tile, y_tile = self.map.get_tile(click_x, click_y)
-        clicked_character = self.map.tiles[x_tile][y_tile].get_entity()
+        clicked_character = self.map.tiles[x_tile][y_tile].get_character()
         if (isinstance(clicked_character, Character) and 
             clicked_character.moved == False and 
             clicked_character.get_team()==self.teams[self.turn]):
