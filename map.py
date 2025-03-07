@@ -13,7 +13,7 @@ class Map:
         accessible_tiles = []
         if selected_character is not None:
             speed = selected_character.get_speed() 
-            accessible_tiles = self.get_accessible_tiles(selected_character.get_tile(), speed)
+            accessible_tiles = self.get_accessible_tiles(selected_character)
 
         for x in range(N_TILES_X):
             for y in range(N_TILES_Y):
@@ -25,11 +25,11 @@ class Map:
     def get_tile_ij(self, i, j): 
         return self.tiles[i][j]
 
-    def get_accessible_tiles(self, tile, speed):
+    def get_accessible_tiles(self, character):
         accessible_tiles = []
         for x in range(N_TILES_X):
             for y in range(N_TILES_Y):
-                if self.tiles[x][y].get_character() is None and tile.tile_dist(self.tiles[x][y]) <= speed:
+                if self.tiles[x][y].is_accessible(character):
                     accessible_tiles.append((x, y))
         return accessible_tiles
     

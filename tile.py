@@ -25,6 +25,19 @@ class Tile:
             return False
         return True
 
+    def is_occupiable(self, character):
+        if not self.terrain.is_crossable():
+            return False
+        if not character.can_walk_on(self.character):
+            return False
+        if not character.can_walk_on(self.building):
+            return False
+        return True
+
+    def is_accessible(self, character):
+        return self.is_occupiable(character) and self.tile_dist(character.get_tile()) <= character.get_speed()
+
+
     def get_terrain(self):
         return self.terrain
     
