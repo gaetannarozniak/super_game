@@ -25,8 +25,6 @@ class Tile:
             return False
         return True
 
-    
-
     def get_terrain(self):
         return self.terrain
     

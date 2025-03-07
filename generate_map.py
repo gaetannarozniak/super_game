@@ -22,7 +22,8 @@ def generate_map(self, distance_base=4, group_sizes=[2,3], forest_count=5, fores
     
     # Place gold groups
     golds = 0
-    while golds < self.nb_gold:
+    nb_gold = (N_TILES_X * N_TILES_Y) // 10
+    while golds < nb_gold:
         x, y = random.randint(0, N_TILES_X-1), random.randint(0, N_TILES_Y-1)
         if tiles_type[x][y] != "grass":
             continue  

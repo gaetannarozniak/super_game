@@ -4,8 +4,8 @@ TEAMS = ["Red", "Blue"]
 TERRAINS = ["grass", "gold", "tree"]
 CHARACTERS = ["miner", "soldier"]
 
-N_TILES_X = 30
-N_TILES_Y = 20
+N_TILES_X = 20
+N_TILES_Y = 10
 TILE_SIZE = 40
 
 MENU_WIDTH = 200
