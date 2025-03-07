@@ -23,12 +23,12 @@ class Font:
 class Button:
     def __init__(self, x, y, width, height, callback, text: str):
         self.rect = pygame.Rect(x, y, width, height)
-        self.color = (200, 200, 200)
+        self.border_color = (255, 255, 255)
         self.callback = callback
         self.text = text
 
     def draw(self, surface, size):
-        pygame.draw.rect(surface, self.color, self.rect) 
+        pygame.draw.rect(surface, self.border_color, self.rect, 2)
         text_surface = Font.render(self.text, size)
         text_rect = text_surface.get_rect(center=self.rect.center)
         surface.blit(text_surface, text_rect)

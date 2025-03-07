@@ -61,8 +61,7 @@ class Game:
         for entity in self.teams[self.turn].entities:
             if isinstance(entity, Character):
                 entity.moved = False
-        self.turn = (self.turn+1) % len(self.teams)
-        pygame.display.set_caption(self.teams[self.turn].get_name())    
+        self.turn = (self.turn+1) % len(self.teams)   
 
     def buy_miner(self):
         self.teams[self.turn].buy_miner()
