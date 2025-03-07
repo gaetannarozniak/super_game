@@ -55,6 +55,10 @@ class Character(Entity, ABC):
         self.team.remove_entity(self)
         del self
 
+    @abstractmethod
+    def can_walk_on(self, other: Entity):
+        pass
+
 class Building(Entity, ABC):
     def __init__(self, tile, team, life):
         super().__init__(tile, team)
@@ -77,7 +81,7 @@ class Building(Entity, ABC):
 
 class Miner(Character):
     def __init__(self, tile, team):
-        super().__init__(tile=tile, team=team, speed=30)
+        super().__init__(tile=tile, team=team, speed=10)
 
     def draw(self, figure, x, y):
         if self.team.get_name() == "Red":
@@ -91,9 +95,18 @@ class Miner(Character):
             self.team.add_gold(100)
         tile.set_character(self)
 
+    def can_walk_on(self, other: Entity):
+        if isinstance(other, Building):
+            return other.get_team() == self.team
+        if isinstance(other, Building):
+            return False
+        return True
+
+    
+
 class Soldier(Character):
     def __init__(self, tile, team):
-        super().__init__(tile=tile, team=team, speed=50)
+        super().__init__(tile=tile, team=team, speed=10)
 
     def draw(self, figure, x, y):
         if self.team.get_name() == "Red":
@@ -120,6 +133,10 @@ class Soldier(Character):
         else:
             tile.set_character(self)
             
+    def can_walk_on(self, other: Entity):
+        if isinstance(other, Character):
+            return other.get_team() != self.team
+        return True
     
 class Base(Building):
     def __init__(self, tile, team):

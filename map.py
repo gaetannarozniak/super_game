@@ -12,7 +12,6 @@ class Map:
     def draw(self, figure, selected_character):
         accessible_tiles = []
         if selected_character is not None:
-            speed = selected_character.get_speed() 
             accessible_tiles = self.get_accessible_tiles(selected_character)
 
         for x in range(N_TILES_X):
@@ -20,7 +19,8 @@ class Map:
                 self.tiles[x][y].draw(figure, (x, y) in accessible_tiles) 
 
     def get_tile(self, click_x, click_y):
-        return click_x // TILE_SIZE, click_y // TILE_SIZE
+        i, j = click_x // TILE_SIZE, click_y // TILE_SIZE
+        return self.tiles[i][j]
 
     def get_tile_ij(self, i, j): 
         return self.tiles[i][j]

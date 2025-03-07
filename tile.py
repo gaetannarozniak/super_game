@@ -16,12 +16,12 @@ class Tile:
         if self.character is not None:
             self.character.draw(figure, self.x, self.y)
 
-    def is_crossable(self, team):
+    def is_crossable(self, character):
         if not self.terrain.is_crossable():
             return False
-        if self.character is not None and self.character.get_team() != team:
+        if self.character is not None and self.character.get_team() != character.get_team():
             return False
-        if self.building is not None and self.building.get_team() != team:
+        if self.building is not None and self.building.get_team() != character.get_team():
             return False
         return True
 
