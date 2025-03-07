@@ -2,11 +2,14 @@ import pygame
 from config import TILE_SIZE, TERRAINS
 from utils import load_images
 
+import random
+
 TERRAIN_IMAGES = load_images("terrain", TERRAINS)
 
 class Terrain:
     def __init__(self, terrain_type:str):
         self.terrain_type = terrain_type
+        self.seed = random.randint(0, 1000)
 
     def get_terrain_type(self):
         return self.terrain_type
@@ -15,7 +18,14 @@ class Terrain:
         self.terrain_type = terrain_type
     
     def draw(self, figure, x, y, accessible=False):
-        figure.blit(TERRAIN_IMAGES["grass"], (x * TILE_SIZE, y * TILE_SIZE))
+        random.seed(self.seed)
+        if random.random() < 0.2 and self.terrain_type == "grass":
+            figure.blit(TERRAIN_IMAGES["grass"], (x * TILE_SIZE, y * TILE_SIZE))
+        elif random.random() > 0.9 and self.terrain_type == "grass":
+            figure.blit(TERRAIN_IMAGES["flowers"], (x * TILE_SIZE, y * TILE_SIZE))
+        else:
+            figure.blit(TERRAIN_IMAGES["grass_2"], (x * TILE_SIZE, y * TILE_SIZE))
+
         if self.terrain_type != "grass":
             figure.blit(TERRAIN_IMAGES[self.terrain_type], (x * TILE_SIZE, y * TILE_SIZE))
         if accessible:

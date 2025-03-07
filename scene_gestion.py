@@ -10,7 +10,11 @@ import sys
 class SceneGestion:
     def __init__(self):
         pygame.init()
-        
+        pygame.mixer.init() 
+
+        pygame.mixer.music.load("musique.mp3")
+        pygame.mixer.music.play(-1)
+
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pygame.display.set_caption("super game !")
 
