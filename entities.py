@@ -52,6 +52,7 @@ class Character(Entity, ABC):
         if self.tile.get_character() != None:
             self.tile.remove_character()
         self.team.remove_entity(self)
+        del self
 
 class Building(Entity, ABC):
     def __init__(self, tile, team, life):
@@ -71,6 +72,7 @@ class Building(Entity, ABC):
     def die(self):
         self.tile.remove_building()
         self.team.remove_entity(self)
+        del self
 
 class Miner(Character):
     def __init__(self, tile, team):

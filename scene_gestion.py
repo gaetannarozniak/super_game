@@ -1,24 +1,25 @@
 from game import Game
-#from home_page import HomePage
+from home_page import HomePage
 from config import TEAMS, FPS, SCREEN_WIDTH, SCREEN_HEIGHT
+from utils import Font
 
 import pygame
 import sys
 
 class SceneGestion:
     def __init__(self):
-
-        pygame.font.init()
-        self.font = pygame.font.Font(None, 25)
+        pygame.init()
+        
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pygame.display.set_caption("super game !")
 
-        self.home_page = None
-        self.game = Game(TEAMS, self.screen, self.font)
-        self.current_scene = self.game
+        self.home_page = HomePage(self.screen)
+        self.game = Game(TEAMS, self.screen)
+        self.current_scene = self.home_page
+
+        Font.load()
     
     def run(self):
-        pygame.init()
         clock = pygame.time.Clock()
         running = True
         while running:

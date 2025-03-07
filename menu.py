@@ -1,5 +1,6 @@
 import pygame
 from config import MENU_WIDTH
+from utils import Button, Font
 
 class Menu:
     def __init__(self, change_turn, buy_miner, buy_soldier):
@@ -14,36 +15,22 @@ class Menu:
                                   
         self.button_list = [change_turn_button, buy_miner_button, buy_soldier_button]
 
-    def draw(self, surface, font, teams, turn):
+    def draw(self, surface, teams, turn, size="medium"):
         surface.fill(self.background_color)
-
-        self.draw_text(surface, font, "Team turn :" + teams[turn].get_name(), 10, 10)
-        self.draw_text(surface, font, "Gold: " + str(teams[turn].get_gold()), 10, 50)
-        self.draw_text(surface, font, "Team " + teams[0].get_name() + " Life: " + str(teams[0].get_life()), 10, 150)
-        self.draw_text(surface, font, "Team " + teams[1].get_name() + " Life: " + str(teams[1].get_life()), 10, 175)
+        surface.blit(Font.render("Team turn :" + teams[turn].get_name(), size), (10, 10))
+        surface.blit(Font.render("Gold: " + str(teams[turn].get_gold()), size), (10, 50))
+        surface.blit(Font.render("Team " + teams[0].get_name() + " Life: " + str(teams[0].get_life()), size), (10, 150))
+        surface.blit(Font.render("Team " + teams[1].get_name() + " Life: " + str(teams[1].get_life()), size), (10, 175))
 
         for team in teams:
             if team.get_life() <= 0:
-                self.draw_text(surface, font, team.get_name() + " has lost", 10, 225)
+                surface.blit(Font.render(team.get_name() + " has lost", size), (10, 225))
         
         for button in self.button_list:
-            button.draw(surface, font)
+            button.draw(surface, size)
 
     def click(self, click_x, click_y):
         for button in self.button_list:
             if button.rect.collidepoint((click_x, click_y)):
                 button.callback()
 
-    def draw_text(self, surface, font, text, x, y):
-        surface.blit(font.render(text, True, (0, 0, 0)), (x, y))
-
-class Button:
-    def __init__(self, x, y, width, height, callback, text: str):
-        self.rect = pygame.Rect(x, y, width, height)
-        self.color = (200, 200, 200)
-        self.callback = callback
-        self.text = text
-
-    def draw(self, menu_surface, font):
-        pygame.draw.rect(menu_surface, self.color, self.rect)
-        menu_surface.blit(font.render(self.text, True, (0,0,0)), self.rect.topleft)

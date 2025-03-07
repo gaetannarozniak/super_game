@@ -7,11 +7,11 @@ from entities import Character
 import pygame
 
 class Game:
-    def __init__(self, list_teams, screen, font):
+    def __init__(self, list_teams, screen):
         self.map = Map()
         self.menu = Menu(self.change_turn, self.buy_miner, self.buy_soldier)
 
-        self.display_game = DisplayGame(self.map, self.menu, screen, font)
+        self.display_game = DisplayGame(self.map, self.menu, screen)
 
         base_tiles = self.map.get_base_tiles()
         self.teams = [Team(list_teams[i], base_tiles[i]) for i in range(len(list_teams))]
