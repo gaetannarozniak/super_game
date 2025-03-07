@@ -1,6 +1,3 @@
 # super_game
 
-En cours
-
-salut c'est gaetan
-salut c'est auguste
+First images : https://opengameart.org/content/tiny-16-basic
