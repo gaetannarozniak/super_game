@@ -2,6 +2,8 @@ import pygame
 from config import MENU_WIDTH, SCREEN_HEIGHT
 from utils import Button, Font
 
+HEART_IMAGE = pygame.transform.scale(pygame.image.load("resources/images/heart_small.png"), (40, 40))
+
 class Menu:
     def __init__(self, change_turn, buy_miner, buy_soldier):
         self.bar_width = 3
@@ -27,10 +29,12 @@ class Menu:
                      (self.menu_width // 2 - Font.render("Team turn : " + teams[turn].get_name(), size).get_width() // 2, 10))
         surface.blit(Font.render("Gold : " + str(teams[turn].get_gold()), size), 
                      (self.menu_width // 2 - Font.render("Gold : " + str(teams[turn].get_gold()), size).get_width() // 2, 50))
-        surface.blit(Font.render("Team " + teams[0].get_name() + " Life : " + str(teams[0].get_life()), size), 
-                     (self.menu_width // 2 - Font.render("Team " + teams[0].get_name() + " Life : " + str(teams[0].get_life()), size).get_width() // 2, 150))
-        surface.blit(Font.render("Team " + teams[1].get_name() + " Life : " + str(teams[1].get_life()), size), 
-                     (self.menu_width // 2 - Font.render("Team " + teams[1].get_name() + " Life : " + str(teams[1].get_life()), size).get_width() // 2, 175))
+        surface.blit(Font.render("Team " + teams[0].get_name() + " Life : ", size), (10, 150))
+        for i in range(teams[0].get_life()):
+            surface.blit(HEART_IMAGE, (Font.render("Team " + teams[0].get_name() + " Life : ", size).get_width() + 10 + i * 20, 140))
+        surface.blit(Font.render("Team " + teams[1].get_name() + " Life : ", size), (10, 175))
+        for i in range(teams[1].get_life()):
+            surface.blit(HEART_IMAGE, (Font.render("Team " + teams[1].get_name() + " Life : ", size).get_width() + 10 + i * 20, 165))
         
         for button in self.button_list:
             button.draw(surface, size)

@@ -123,7 +123,7 @@ class Soldier(Character):
     
 class Base(Building):
     def __init__(self, tile, team):
-        super().__init__(tile=tile, team=team, life=1)
+        super().__init__(tile=tile, team=team, life=2)
 
     def draw(self, figure, x, y):
         if self.team.get_name() == "Red":
