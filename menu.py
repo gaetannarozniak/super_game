@@ -2,11 +2,14 @@ import pygame
 from config import MENU_WIDTH
 
 class Menu:
-    def __init__(self, change_turn):
+    def __init__(self, change_turn, buy_miner):
         self.background_color = (100, 100, 100)
         change_turn_button = Button(10, 200, MENU_WIDTH - 20,
                                           30, change_turn, text="End Turn")
-        self.button_list = [change_turn_button]
+        buy_miner_button = Button(10, 300, MENU_WIDTH - 20,
+                                          30, buy_miner, text="Buy Miner")
+                                  
+        self.button_list = [change_turn_button, buy_miner_button]
 
     def draw(self, surface, font, team):
         surface.fill(self.background_color)

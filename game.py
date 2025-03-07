@@ -9,9 +9,10 @@ from entities import Character
 class Game:
     def __init__(self, list_teams):
         self.map = Map()
-        self.menu = Menu(self.change_turn)
+        self.menu = Menu(self.change_turn, self.buy_miner)
         self.display_game = DisplayGame(self.map, self.menu)
-        self.teams = [Team(name) for name in list_teams]
+        base_tiles = self.map.get_base_tiles()
+        self.teams = [Team(list_teams[i], base_tiles[i]) for i in range(len(list_teams))]
         self.selected_character = None
         self.turn = 0
 
@@ -20,8 +21,6 @@ class Game:
         pygame.display.set_caption(self.teams[self.turn].get_name())    
         clock = pygame.time.Clock()
         running = True
-        self.create_base(2, 2, self.teams[0])
-        self.create_base(N_TILES_X-3, N_TILES_Y-3, self.teams[0])
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -71,6 +70,5 @@ class Game:
         self.turn = (self.turn+1) % len(self.teams)
         pygame.display.set_caption(self.teams[self.turn].get_name())    
 
-    def create_base(self, i_tile, j_tile, team):
-        tile = self.map.get_tile_ij(i_tile, j_tile)
-        team.create_base(tile)
+    def buy_miner(self):
+        self.teams[self.turn].buy_miner()

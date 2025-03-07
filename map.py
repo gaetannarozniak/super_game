@@ -119,3 +119,6 @@ class Map:
                 return
             Miner(self.tiles[x][y], teams[1])
             teams[1].gold -= 100
+    
+    def get_base_tiles(self): # return the tiles of the teams base
+        return [self.tiles[3][3], self.tiles[N_TILES_X-4][N_TILES_Y-4]]
