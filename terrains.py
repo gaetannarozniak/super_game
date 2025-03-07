@@ -24,3 +24,5 @@ class Terrain:
             transparent.fill((50, 50, 50))
             figure.blit(transparent, (x * TILE_SIZE, y * TILE_SIZE))
         
+    def is_crossable(self):
+        return self.terrain_type != "tree"
