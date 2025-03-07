@@ -129,6 +129,6 @@ class Base(Building):
         super().__init__(tile=tile, team=team, life=1)
 
     def draw(self, figure, x, y):
-        base_image = pygame.image.load("images/base.png")
+        base_image = pygame.image.load("resources/images/base.png")
         base_image_scaled = pygame.transform.scale(base_image, (TILE_SIZE, TILE_SIZE))
         figure.blit(base_image_scaled, (x*TILE_SIZE, y*TILE_SIZE))

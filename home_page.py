@@ -12,7 +12,7 @@ class HomePage:
     def __init__(self, screen):
         self.screen = screen
         self.button = Button(SCREEN_WIDTH//2 - 100, SCREEN_HEIGHT//2 - 50, 200, 50, lambda: "game", "Start")
-        self.background = pygame.image.load("images/home_page.jpg")
+        self.background = pygame.image.load("resources/images/home_page.jpg")
         self.background = pygame.transform.scale(self.background, (SCREEN_WIDTH, SCREEN_HEIGHT))
         self.time = 0
 
@@ -31,7 +31,7 @@ class HomePage:
             }
             self.ducks.append(duck)
 
-        self.number_miners = 5
+        self.number_miners = 4
         self.miners = []
         for _ in range(self.number_miners):
             miner = {
@@ -48,7 +48,7 @@ class HomePage:
         for _ in range(self.number_soldiers):
             soldier = {
                 "current_image": random.randint(1, 3), 
-                "soldier_x": SCREEN_WIDTH + random.randint(1500, 2000), 
+                "soldier_x": SCREEN_WIDTH + random.randint(50, 2000), 
                 "soldier_y": 400, 
                 "soldier_speed": random.randint(6, 7),
                 "time": random.randint(0, 10),
@@ -93,7 +93,7 @@ class HomePage:
             if soldier["soldier_x"] < -100:
                 soldier["soldier_x"] = SCREEN_WIDTH + random.randint(1500, 2000)
                 soldier["time"] = 0
-                soldier["soldier_speed"] = random.randint(6, 7)
+                soldier["soldier_speed"] = random.randint(5, 7)
     
     def display(self):
         self.screen.fill((255,255,255))
@@ -111,7 +111,8 @@ class HomePage:
         for soldier in self.soldiers:
             self.screen.blit(SOLDIER_IMAGES[f"soldier_{soldier['current_image']}"], (soldier["soldier_x"], soldier["soldier_y"]))
 
-        self.screen.blit(Font.render("Welcome to super game", "large"), (SCREEN_WIDTH//2 - 140, 100))
+        self.screen.blit(Font.render("Welcome to super game", "large", color=(255, 255, 255)), (SCREEN_WIDTH//2 - 200, 100))
+        
         self.button.draw(self.screen, "medium")
         pygame.display.flip()
 

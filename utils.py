@@ -2,7 +2,7 @@ import pygame
 from config import TILE_SIZE
 
 def load_images(prefix, string_list, size_x = TILE_SIZE, size_y = TILE_SIZE):
-    images = {key: pygame.image.load(f"images/{prefix}/{key}.png") for key in string_list}
+    images = {key: pygame.image.load(f"resources/images/{prefix}/{key}.png") for key in string_list}
     for key in images.keys():
         images[key] = pygame.transform.scale(images[key], (size_x, size_y)) 
     return images
@@ -13,8 +13,8 @@ class Font:
     @staticmethod
     def load():
         Font._font["small"] = pygame.font.Font(None, 15)
-        Font._font["medium"] = pygame.font.Font(None, 25)
-        Font._font["large"] = pygame.font.Font(None, 35)
+        Font._font["medium"] = pygame.font.Font("resources/font/font_medium.otf", 20)
+        Font._font["large"] = pygame.font.Font("resources/font/font_large.ttf", 35)
     
     @staticmethod
     def render(text, size, color= (0, 0, 0)):

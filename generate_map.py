@@ -3,7 +3,7 @@ from config import N_TILES_X, N_TILES_Y
 from terrains import Terrain
 from tile import Tile
 
-def generate_map(self, distance_base=4, group_sizes=[2,3], forest_count=5, forest_sizes=[2,3,4]):
+def generate_map(distance_base=4, group_sizes=[2,3], forest_count=5, forest_sizes=[2,3,4]):
     """
     Generates the map with grass, gold groups, and forest clusters.
 

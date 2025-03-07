@@ -7,7 +7,7 @@ class Map:
         self.tiles = self.generate()
     
     def generate(self):
-        return generate_map(self)
+        return generate_map()
         
     def draw(self, figure, selected_character):
         accessible_tiles = []
