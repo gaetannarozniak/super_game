@@ -1,6 +1,9 @@
 import pygame
 from abc import abstractmethod, ABC
-from config import TILE_SIZE
+from config import TILE_SIZE, CHARACTERS
+from utils import load_images
+
+CHARACTER_IMAGES = load_images("character", CHARACTERS)
 
 class Entity(ABC): # cannot instantiate abstract class Entity
     def __init__(self, tile, team):
@@ -59,6 +62,7 @@ class Miner(Character):
             pygame.draw.circle(figure, (255, 0, 0), (x * tile_size + tile_size // 2, y * tile_size + tile_size // 2), tile_size // 3)
         elif self.team.name == "Blue":
             pygame.draw.circle(figure, (0, 0, 255), (x * tile_size + tile_size // 2, y * tile_size + tile_size // 2), tile_size // 3)
+        figure.blit(CHARACTER_IMAGES["miner"], (x * TILE_SIZE, y * TILE_SIZE))
     
     def interact(self, tile):
         if tile.get_terrain_type() == "gold":
@@ -75,6 +79,7 @@ class Soldier(Character):
             pygame.draw.rect(figure, (255, 0, 0), (x * tile_size + tile_size // 4, y * tile_size + tile_size // 4, tile_size // 2, tile_size // 2))
         elif self.team.name == "Blue":
             pygame.draw.rect(figure, (0, 0, 255), (x * tile_size + tile_size // 4, y * tile_size + tile_size // 4, tile_size // 2, tile_size // 2))
+        figure.blit(CHARACTER_IMAGES["soldier"], (x * TILE_SIZE, y * TILE_SIZE))
 
     def interact(self, tile):
         character = tile.get_character()
