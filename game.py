@@ -33,12 +33,14 @@ class Game:
             if event.key == pygame.K_n:
                 self.change_turn()  
 
-        self.display_game.display(self.selected_character, self.teams, self.turn)
         if self.teams[0].get_life() == 0:
             return "Blue"
         elif self.teams[1].get_life() == 0:
             return "Red"
         return False
+
+    def display(self):
+        self.display_game.display(self.selected_character, self.teams, self.turn)
 
     def left_click(self, click_x, click_y):
         x_tile, y_tile = self.map.get_tile(click_x, click_y)

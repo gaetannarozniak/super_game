@@ -35,6 +35,7 @@ class SceneGestion:
                 else:
                     change = self.current_scene.handle_event(event)
                     self.change_scene(change)
+            self.current_scene.display()
             clock.tick(FPS)
 
     def change_scene(self, change):
