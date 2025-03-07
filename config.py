@@ -5,7 +5,7 @@ TERRAINS = ["grass", "gold", "tree"]
 CHARACTERS = ["miner", "soldier"]
 
 N_TILES_X = 20
-N_TILES_Y = 10
+N_TILES_Y = 15
 TILE_SIZE = 40
 
 MENU_WIDTH = 200

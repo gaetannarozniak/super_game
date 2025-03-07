@@ -20,12 +20,9 @@ class Entity(ABC): # cannot instantiate abstract class Entity
     def get_tile(self):
         return self.tile
     
+    @abstractmethod
     def die(self):
-        if self.tile.get_character() is not None:
-            self.tile.remove_character()
-        if self.tile.get_building() is not None:
-            self.tile.remove_building()
-        self.team.remove_entity(self)
+        pass
 
 class Character(Entity, ABC):
     def __init__(self, tile, team, speed):
@@ -40,17 +37,21 @@ class Character(Entity, ABC):
             return ValueError(f"impossible to move: the two tiles are too far away {self.speed} < {self.tile.tile_dist(future_tile)}")
         self.tile.remove_character() 
         print(f"character moved from ({self.tile.x}, {self.tile.y}) to ({future_tile.x}, {future_tile.y})")
-        try:
-            self.interact(future_tile)
-        except SystemError as e:
-            if e.args[0] == "Die !":
-                return
-        future_tile.set_character(self)
+        self.interact(future_tile)
         self.tile = future_tile
         self.moved = True
     
     def get_speed(self):
         return self.speed
+    
+    @abstractmethod
+    def interact(self, tile):
+        pass
+
+    def die(self):
+        if self.tile.get_character() != None:
+            self.tile.remove_character()
+        self.team.remove_entity(self)
 
 class Building(Entity, ABC):
     def __init__(self, tile, team, life):
@@ -66,6 +67,10 @@ class Building(Entity, ABC):
         self.life -= 1
         if self.life == 0:
             self.die()
+
+    def die(self):
+        self.tile.remove_building()
+        self.team.remove_entity(self)
 
 class Miner(Character):
     def __init__(self, tile, team):
@@ -83,6 +88,7 @@ class Miner(Character):
         if tile.get_terrain_type() == "gold":
             tile.set_terrain_type("grass")
             self.team.add_gold(100)
+        tile.set_character(self)
 
 class Soldier(Character):
     def __init__(self, tile, team):
@@ -98,18 +104,22 @@ class Soldier(Character):
 
     def interact(self, tile):
         character = tile.get_character()
+        building = tile.get_building()
+        
         if character is not None and character.get_team() != self.team:
             if isinstance(character, Soldier):
                 character.die()
                 self.die()
-                raise SystemError("Die !")
             else:
                 character.die()
-        building = tile.get_building()
-        if building is not None and building.get_team() != self.team:
+                tile.set_character(self)
+                
+        elif building is not None and building.get_team() != self.team:
             building.lose_life()
             self.die()
-            raise SystemError("Die !")
+
+        else:
+            tile.set_character(self)
             
     
 class Base(Building):
