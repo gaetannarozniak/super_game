@@ -2,7 +2,8 @@ FPS: int = 60
 
 TEAMS = ["Red", "Blue"]
 TERRAINS = ["grass", "grass_2", "flowers", "gold", "tree"]
-CHARACTERS = ["miner", "soldier"]
+CHARACTERS = ["miner_red", "miner_blue", "soldier_red", "soldier_blue"]
+BUILDINGS = ["base_red", "base_blue"]
 
 N_TILES_X = 20
 N_TILES_Y = 15

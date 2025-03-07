@@ -1,9 +1,10 @@
 import pygame
 from abc import abstractmethod, ABC
-from config import TILE_SIZE, CHARACTERS
+from config import TILE_SIZE, CHARACTERS, BUILDINGS
 from utils import load_images
 
 CHARACTER_IMAGES = load_images("character", CHARACTERS)
+BUILDING_IMAGES = load_images("building", BUILDINGS)
 
 class Entity(ABC): # cannot instantiate abstract class Entity
     def __init__(self, tile, team):
@@ -79,12 +80,10 @@ class Miner(Character):
         super().__init__(tile=tile, team=team, speed=30)
 
     def draw(self, figure, x, y):
-        tile_size = TILE_SIZE
-        if self.team.name == "Red":
-            pygame.draw.circle(figure, (255, 0, 0), (x * tile_size + tile_size // 2, y * tile_size + tile_size // 2), tile_size // 3)
-        elif self.team.name == "Blue":
-            pygame.draw.circle(figure, (0, 0, 255), (x * tile_size + tile_size // 2, y * tile_size + tile_size // 2), tile_size // 3)
-        figure.blit(CHARACTER_IMAGES["miner"], (x * TILE_SIZE, y * TILE_SIZE))
+        if self.team.get_name() == "Red":
+            figure.blit(CHARACTER_IMAGES["miner_red"], (x * TILE_SIZE, y * TILE_SIZE))
+        elif self.team.get_name() == "Blue":
+            figure.blit(CHARACTER_IMAGES["miner_blue"], (x * TILE_SIZE, y * TILE_SIZE))
     
     def interact(self, tile):
         if tile.get_terrain_type() == "gold":
@@ -97,12 +96,10 @@ class Soldier(Character):
         super().__init__(tile=tile, team=team, speed=50)
 
     def draw(self, figure, x, y):
-        tile_size = TILE_SIZE
-        if self.team.name == "Red":
-            pygame.draw.rect(figure, (255, 0, 0), (x * tile_size + tile_size // 4, y * tile_size + tile_size // 4, tile_size // 2, tile_size // 2))
-        elif self.team.name == "Blue":
-            pygame.draw.rect(figure, (0, 0, 255), (x * tile_size + tile_size // 4, y * tile_size + tile_size // 4, tile_size // 2, tile_size // 2))
-        figure.blit(CHARACTER_IMAGES["soldier"], (x * TILE_SIZE, y * TILE_SIZE))
+        if self.team.get_name() == "Red":
+            figure.blit(CHARACTER_IMAGES["soldier_red"], (x * TILE_SIZE, y * TILE_SIZE))
+        elif self.team.get_name() == "Blue":
+            figure.blit(CHARACTER_IMAGES["soldier_blue"], (x * TILE_SIZE, y * TILE_SIZE))
 
     def interact(self, tile):
         character = tile.get_character()
@@ -129,6 +126,7 @@ class Base(Building):
         super().__init__(tile=tile, team=team, life=1)
 
     def draw(self, figure, x, y):
-        base_image = pygame.image.load("resources/images/base.png")
-        base_image_scaled = pygame.transform.scale(base_image, (TILE_SIZE, TILE_SIZE))
-        figure.blit(base_image_scaled, (x*TILE_SIZE, y*TILE_SIZE))
+        if self.team.get_name() == "Red":
+            figure.blit(BUILDING_IMAGES["base_red"], (x * TILE_SIZE, y * TILE_SIZE))
+        elif self.team.get_name() == "Blue":
+            figure.blit(BUILDING_IMAGES["base_blue"], (x * TILE_SIZE, y * TILE_SIZE))
