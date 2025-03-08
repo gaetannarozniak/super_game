@@ -96,10 +96,10 @@ class Miner(Character):
         tile.set_character(self)
 
     def can_walk_on(self, other: Entity):
+        if isinstance(other, Character):
+            return False
         if isinstance(other, Building):
             return other.get_team() == self.team
-        if isinstance(other, Building):
-            return False
         return True
 
     

@@ -1,5 +1,6 @@
 from terrains import Terrain
 from entities import Character, Building
+from collections import deque
 
 class Tile:
     def __init__(self, x, y, terrain:Terrain = Terrain("grass")):
@@ -16,6 +17,7 @@ class Tile:
         if self.character is not None:
             self.character.draw(figure, self.x, self.y)
 
+    # is it allowed for the character to pass by the tile
     def is_crossable(self, character):
         if not self.terrain.is_crossable():
             return False
@@ -25,18 +27,11 @@ class Tile:
             return False
         return True
 
-    def is_occupiable(self, character):
-        if not self.terrain.is_crossable():
-            return False
-        if not character.can_walk_on(self.character):
-            return False
-        if not character.can_walk_on(self.building):
-            return False
-        return True
-
-    def is_accessible(self, character):
-        return self.is_occupiable(character) and self.tile_dist(character.get_tile()) <= character.get_speed()
-
+    # is it allowed for the character to be on the tile (no matter whether the tile is reachable or not)
+    def is_occupiable(self, character: Character):
+        return (self.terrain.is_crossable() and 
+                character.can_walk_on(self.character) and
+                character.can_walk_on(self.building))
 
     def get_terrain(self):
         return self.terrain
