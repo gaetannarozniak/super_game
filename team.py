@@ -1,4 +1,4 @@
-from entities import Base, Miner, Soldier
+from entities import Base, Miner, Soldier, Character
 
 class Team:
     def __init__(self, name, base_tile):
@@ -6,6 +6,19 @@ class Team:
         self.name = name
         self.base = self.create_base(base_tile)
         self.gold = 20000
+
+    def get_next_character(self, current_character: Character = None):
+        moveable_characters = [e for e in self.entities if isinstance(e, Character) and not e.moved]
+        if len(moveable_characters) == 0:
+            print("There are no moveable characters in this team, impossible to select one")
+            return None
+        if current_character is None:
+            return moveable_characters[0]
+        if current_character not in moveable_characters:
+            raise ValueError("The selected character is not in the team moveable characters")
+        index = moveable_characters.index(current_character)
+        return moveable_characters[(index+1) % len(moveable_characters)]
+        
 
     def add_entity(self, entity):
         if entity in self.entities:

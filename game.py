@@ -30,8 +30,10 @@ class Game:
                 self.menu.click(click_x, click_y)
 
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_n:
+            if event.key == pygame.K_RETURN:
                 self.change_turn()  
+            if event.key == pygame.K_n:
+                self.select_next_character()
 
         if self.teams[0].get_life() == 0:
             return "Blue"
@@ -71,3 +73,6 @@ class Game:
 
     def buy_soldier(self):
         self.teams[self.turn].buy_soldier()
+
+    def select_next_character(self):
+        self.selected_character = self.teams[self.turn].get_next_character(self.selected_character)
