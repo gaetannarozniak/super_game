@@ -63,7 +63,7 @@ class Game:
         if self.selected_character is not None:
             if tile_clicked in self.map.get_accessible_tiles(self.selected_character):
                 self.selected_character.move_tile(tile_clicked)
-                self.selected_character = None
+                self.select_next_character()
     
     def change_turn(self):
         self.selected_character = None
@@ -71,12 +71,15 @@ class Game:
             if isinstance(entity, Character):
                 entity.moved = False
         self.turn = (self.turn+1) % len(self.teams)
+        self.select_next_character()
 
     def buy_miner(self):
-        self.teams[self.turn].buy_miner()
+        new_miner = self.teams[self.turn].buy_miner()
+        self.selected_character = new_miner
 
     def buy_soldier(self):
-        self.teams[self.turn].buy_soldier()
+        new_soldier = self.teams[self.turn].buy_soldier()
+        self.selected_character = new_soldier
 
     def select_next_character(self):
         self.selected_character = self.teams[self.turn].get_next_character(self.selected_character)

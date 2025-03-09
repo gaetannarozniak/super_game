@@ -12,10 +12,8 @@ class Team:
         if len(moveable_characters) == 0:
             print("There are no moveable characters in this team, impossible to select one")
             return None
-        if current_character is None:
-            return moveable_characters[0]
         if current_character not in moveable_characters:
-            raise ValueError("The selected character is not in the team moveable characters")
+            return moveable_characters[0]
         index = moveable_characters.index(current_character)
         return moveable_characters[(index+1) % len(moveable_characters)]
         
@@ -33,12 +31,12 @@ class Team:
     def buy_miner(self):
         if self.gold >= 100:
             self.gold -= 100
-            Miner(self.base.tile, self)
+            return Miner(self.base.tile, self)
 
     def buy_soldier(self):
         if self.gold >= 200:
             self.gold -= 200
-            Soldier(self.base.tile, self)
+            return Soldier(self.base.tile, self)
 
     def create_base(self, tile):
         return Base(tile, self)
