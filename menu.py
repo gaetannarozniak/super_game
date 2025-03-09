@@ -10,11 +10,11 @@ class Menu:
         self.menu_width = MENU_WIDTH - self.bar_width
 
         change_turn_button = Button(10, 300, self.menu_width - 20,
-                                          30, change_turn, text="End Turn")
+                                          30, change_turn, text="End Turn (Enter)")
         buy_miner_button = Button(10, 450, self.menu_width - 20,
-                                          30, buy_miner, text="Buy Miner")
+                                          30, buy_miner, text="Buy Miner (M)")
         buy_soldier_button = Button(10, 500, self.menu_width - 20,
-                                          30, buy_soldier, text="Buy Soldier")
+                                          30, buy_soldier, text="Buy Soldier (S)")
         self.button_list = [change_turn_button, buy_miner_button, buy_soldier_button]
 
     def draw(self, surface, teams, turn, size="medium"):

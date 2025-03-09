@@ -34,6 +34,10 @@ class Game:
                 self.change_turn()  
             if event.key == pygame.K_n:
                 self.select_next_character()
+            if event.key == pygame.K_m:
+                self.buy_miner()
+            if event.key == pygame.K_s:
+                self.buy_soldier()
 
         if self.teams[0].get_life() == 0:
             return "Blue"
