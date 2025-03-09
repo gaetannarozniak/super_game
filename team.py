@@ -31,6 +31,9 @@ class Team:
     def buy_character(self, unit_class: Character):
         if not issubclass(unit_class, Character):
             raise TypeError("impossible to buy {unit_class} character")
+        if not self.base.is_empty():
+            print("there is already a character on the base")
+            return
         if self.gold >= unit_class.gold_cost:
             self.gold -= unit_class.gold_cost
             return unit_class(self.base.get_tile(), team=self)

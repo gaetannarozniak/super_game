@@ -42,7 +42,6 @@ class Character(Entity, ABC):
         if self.tile.tile_dist(future_tile) > self.speed:
             return ValueError(f"impossible to move: the two tiles are too far away {self.speed} < {self.tile.tile_dist(future_tile)}")
         self.tile.remove_character() 
-        print(f"character moved from ({self.tile.x}, {self.tile.y}) to ({future_tile.x}, {future_tile.y})")
         self.interact(future_tile)
         self.tile = future_tile
         self.moved = True
@@ -156,3 +155,7 @@ class Base(Building):
             figure.blit(BUILDING_IMAGES["base_red"], (x * TILE_SIZE, y * TILE_SIZE))
         elif self.team.get_name() == "Blue":
             figure.blit(BUILDING_IMAGES["base_blue"], (x * TILE_SIZE, y * TILE_SIZE))
+    
+    # True if there is no character on the base, in order to buy a new one
+    def is_empty(self):
+        return not self.tile.has_character()

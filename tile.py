@@ -42,6 +42,9 @@ class Tile:
     def get_character(self):
         return self.character
 
+    def has_character(self):
+        return self.character is not None
+
     def remove_character(self):
         if self.character is None:
             raise ValueError(f"there is no character to remove in the tile ({self.x}, {self.y})")
