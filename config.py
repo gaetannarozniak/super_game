@@ -1,4 +1,4 @@
-FPS: int = 60
+FPS: int = 20
 
 TEAMS = ["Red", "Blue"]
 TERRAINS = ["grass", "grass_2", "flowers", "gold", "tree"]
