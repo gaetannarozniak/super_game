@@ -6,7 +6,7 @@ CHARACTERS = ["miner_red", "miner_blue", "soldier_red", "soldier_blue"]
 BUILDINGS = ["base_red", "base_blue"]
 
 N_TILES_X = 20
-N_TILES_Y = 15
+N_TILES_Y = 20
 TILE_SIZE = 40
 
 MENU_WIDTH = 200
