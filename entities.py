@@ -26,6 +26,11 @@ class Entity(ABC): # cannot instantiate abstract class Entity
         pass
 
 class Character(Entity, ABC):
+    @property
+    @abstractmethod
+    def gold_cost(self):
+        pass # every Character must define a gold_cost attribute
+
     def __init__(self, tile, team, speed):
         super().__init__(tile, team)
         self.speed = speed
@@ -80,6 +85,8 @@ class Building(Entity, ABC):
         del self
 
 class Miner(Character):
+    gold_cost = 100
+
     def __init__(self, tile, team):
         super().__init__(tile=tile, team=team, speed=10)
 
@@ -105,6 +112,8 @@ class Miner(Character):
     
 
 class Soldier(Character):
+    gold_cost = 200
+
     def __init__(self, tile, team):
         super().__init__(tile=tile, team=team, speed=10)
 

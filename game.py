@@ -2,7 +2,7 @@ from map import Map
 from menu import Menu
 from team import Team
 from display_game import DisplayGame
-from entities import Character
+from entities import Character, Miner, Soldier
 
 import pygame
 
@@ -74,11 +74,11 @@ class Game:
         self.select_next_character()
 
     def buy_miner(self):
-        new_miner = self.teams[self.turn].buy_miner()
+        new_miner = self.teams[self.turn].buy_character(Miner)
         self.selected_character = new_miner
 
     def buy_soldier(self):
-        new_soldier = self.teams[self.turn].buy_soldier()
+        new_soldier = self.teams[self.turn].buy_character(Soldier)
         self.selected_character = new_soldier
 
     def select_next_character(self):

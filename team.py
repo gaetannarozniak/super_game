@@ -28,15 +28,13 @@ class Team:
             return ValueError("the entity we want to remove from the team is not in the team")
         self.entities.remove(entity)
 
-    def buy_miner(self):
-        if self.gold >= 100:
-            self.gold -= 100
-            return Miner(self.base.tile, self)
-
-    def buy_soldier(self):
-        if self.gold >= 200:
-            self.gold -= 200
-            return Soldier(self.base.tile, self)
+    def buy_character(self, unit_class: Character):
+        if not issubclass(unit_class, Character):
+            raise TypeError("impossible to buy {unit_class} character")
+        if self.gold >= unit_class.gold_cost:
+            self.gold -= unit_class.gold_cost
+            return unit_class(self.base.get_tile(), team=self)
+        return None
 
     def create_base(self, tile):
         return Base(tile, self)
