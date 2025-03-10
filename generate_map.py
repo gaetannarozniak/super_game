@@ -5,7 +5,7 @@ from tile import Tile
 import numpy as np
 from perlin_numpy import generate_fractal_noise_2d # pip3 install git+https://github.com/pvigier/perlin-numpy
 
-def generate_map(gold_threshold=-0.4, tree_threshold=0.25, res=5, seed=np.random.randint(1000)): # gold < grass < tree 
+def generate_map(gold_threshold=-0.5, tree_threshold=0.25, res=5, seed=np.random.randint(1000)): # gold < grass < tree 
     tiles_type = [["grass" for _ in range(N_TILES_Y)] for _ in range(N_TILES_X)]
 
     np.random.seed(seed)
