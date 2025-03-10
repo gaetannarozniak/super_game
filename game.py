@@ -50,8 +50,8 @@ class Game:
     def display(self):
         self.display_game.display(self.selected_character, self.teams, self.turn)
 
-    def left_click(self, click_x, click_y):
-        tile_clicked = self.map.get_tile(click_x, click_y)
+    def left_click(self, x, y):
+        tile_clicked = self.map.get_tile(x, y)
         clicked_character = tile_clicked.get_character()
         if (isinstance(clicked_character, Character) and 
             clicked_character.moved == False and 
@@ -60,8 +60,8 @@ class Game:
         else:
             self.selected_character = None
 
-    def right_click(self, click_x, click_y):
-        tile_clicked = self.map.get_tile(click_x, click_y)
+    def right_click(self, x, y):
+        tile_clicked = self.map.get_tile(x, y)
         if self.selected_character is not None:
             if tile_clicked in self.map.get_accessible_tiles(self.selected_character):
                 self.selected_character.move_tile(tile_clicked)

@@ -19,8 +19,8 @@ class Map:
             is_accessible = tile in accessible_tiles
             tile.draw(figure, is_accessible)
 
-    def get_tile(self, click_x, click_y):
-        i, j = click_x // TILE_SIZE, click_y // TILE_SIZE
+    def get_tile(self, x, y):
+        i, j = x // TILE_SIZE, y // TILE_SIZE
         return self.tiles[i][j]
 
     def get_tile_ij(self, i, j): 
@@ -52,9 +52,9 @@ class Map:
     
     def neighbours(self, tile):
         neighbours = []
-        for (dx, dy) in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
+        for (di, dj) in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
             try:
-                neighbours.append(self.get_tile_ij(tile.x + dx, tile.y + dy))
+                neighbours.append(self.get_tile_ij(tile.i + di, tile.j + dj))
             except ValueError:
                 pass 
         return neighbours

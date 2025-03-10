@@ -17,22 +17,22 @@ class Terrain:
     def set_terrain_type(self, terrain_type):
         self.terrain_type = terrain_type
     
-    def draw(self, figure, x, y, accessible=False):
+    def draw(self, figure, i, j, accessible=False):
         random.seed(self.seed)
         if random.random() < 0.2 and self.terrain_type == "grass":
-            figure.blit(TERRAIN_IMAGES["grass"], (x * TILE_SIZE, y * TILE_SIZE))
+            figure.blit(TERRAIN_IMAGES["grass"], (i * TILE_SIZE, j * TILE_SIZE))
         elif random.random() > 0.9 and self.terrain_type == "grass":
-            figure.blit(TERRAIN_IMAGES["flowers"], (x * TILE_SIZE, y * TILE_SIZE))
+            figure.blit(TERRAIN_IMAGES["flowers"], (i * TILE_SIZE, j * TILE_SIZE))
         else:
-            figure.blit(TERRAIN_IMAGES["grass_2"], (x * TILE_SIZE, y * TILE_SIZE))
+            figure.blit(TERRAIN_IMAGES["grass_2"], (i * TILE_SIZE, j * TILE_SIZE))
 
         if self.terrain_type != "grass":
-            figure.blit(TERRAIN_IMAGES[self.terrain_type], (x * TILE_SIZE, y * TILE_SIZE))
+            figure.blit(TERRAIN_IMAGES[self.terrain_type], (i * TILE_SIZE, j * TILE_SIZE))
         if accessible:
             transparent = pygame.Surface((TILE_SIZE, TILE_SIZE))
             transparent.set_alpha(100)
             transparent.fill((50, 50, 50))
-            figure.blit(transparent, (x * TILE_SIZE, y * TILE_SIZE))
+            figure.blit(transparent, (i * TILE_SIZE, j * TILE_SIZE))
         
     def is_crossable(self):
         return self.terrain_type != "tree"

@@ -41,8 +41,8 @@ class Menu:
         for button in self.button_list:
             button.draw(surface, size)
 
-    def click(self, click_x, click_y):
+    def click(self, x, y):
         for button in self.button_list:
-            if button.rect.collidepoint((click_x, click_y)):
+            if button.rect.collidepoint((x, y)):
                 button.callback()
 

@@ -12,7 +12,7 @@ class Entity(ABC): # cannot instantiate abstract class Entity
         self.team = team
 
     @abstractmethod
-    def draw(self, figure, x, y):
+    def draw(self, figure, i, j):
         pass
 
     def get_team(self):
@@ -93,11 +93,11 @@ class Miner(Character):
     def __init__(self, tile, team):
         super().__init__(tile=tile, team=team, speed=self.speed)
 
-    def draw(self, figure, x, y):
+    def draw(self, figure, i, j):
         if self.team.get_name() == "Red":
-            figure.blit(CHARACTER_IMAGES["miner_red"], (x * TILE_SIZE, y * TILE_SIZE))
+            figure.blit(CHARACTER_IMAGES["miner_red"], (i * TILE_SIZE, j * TILE_SIZE))
         elif self.team.get_name() == "Blue":
-            figure.blit(CHARACTER_IMAGES["miner_blue"], (x * TILE_SIZE, y * TILE_SIZE))
+            figure.blit(CHARACTER_IMAGES["miner_blue"], (i * TILE_SIZE, j * TILE_SIZE))
     
     def interact(self, tile):
         if tile.get_terrain_type() == "gold":
@@ -115,17 +115,17 @@ class Miner(Character):
     
 
 class Soldier(Character):
-    speed = MINER_SPEED
+    speed = SOLDIER_SPEED
     gold_cost = 200
 
     def __init__(self, tile, team):
         super().__init__(tile=tile, team=team, speed=self.speed)
 
-    def draw(self, figure, x, y):
+    def draw(self, figure, i, j):
         if self.team.get_name() == "Red":
-            figure.blit(CHARACTER_IMAGES["soldier_red"], (x * TILE_SIZE, y * TILE_SIZE))
+            figure.blit(CHARACTER_IMAGES["soldier_red"], (i * TILE_SIZE, j * TILE_SIZE))
         elif self.team.get_name() == "Blue":
-            figure.blit(CHARACTER_IMAGES["soldier_blue"], (x * TILE_SIZE, y * TILE_SIZE))
+            figure.blit(CHARACTER_IMAGES["soldier_blue"], (i * TILE_SIZE, j * TILE_SIZE))
 
     def interact(self, tile):
         character = tile.get_character()
@@ -155,11 +155,11 @@ class Base(Building):
     def __init__(self, tile, team):
         super().__init__(tile=tile, team=team, life=2)
 
-    def draw(self, figure, x, y):
+    def draw(self, figure, i, j):
         if self.team.get_name() == "Red":
-            figure.blit(BUILDING_IMAGES["base_red"], (x * TILE_SIZE, y * TILE_SIZE))
+            figure.blit(BUILDING_IMAGES["base_red"], (i * TILE_SIZE, j * TILE_SIZE))
         elif self.team.get_name() == "Blue":
-            figure.blit(BUILDING_IMAGES["base_blue"], (x * TILE_SIZE, y * TILE_SIZE))
+            figure.blit(BUILDING_IMAGES["base_blue"], (i * TILE_SIZE, j * TILE_SIZE))
     
     # True if there is no character on the base, in order to buy a new one
     def is_empty(self):
