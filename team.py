@@ -53,3 +53,6 @@ class Team:
 
     def get_life(self):
         return self.base.get_life()
+    
+    def set_life(self, life):
+        self.base.set_life(life)

@@ -77,6 +77,9 @@ class Building(Entity, ABC):
         self.life -= 1
         if self.life == 0:
             self.die()
+    
+    def set_life(self, life):
+        self.life = life
 
     def die(self):
         self.tile.remove_building()

@@ -9,7 +9,7 @@ import pygame
 class Game:
     def __init__(self, list_teams, screen):
         self.map = Map()
-        self.menu = Menu(self.change_turn, self.buy_miner, self.buy_soldier)
+        self.menu = Menu(self.change_turn, self.buy_miner, self.buy_soldier, self.give_up)
 
         self.display_game = DisplayGame(self.map, self.menu, screen)
 
@@ -38,6 +38,8 @@ class Game:
                 self.buy_miner()
             if event.key == pygame.K_s:
                 self.buy_soldier()
+            if event.key == pygame.K_g:
+                self.give_up()
 
         if self.teams[0].get_life() == 0:
             return "Blue"
@@ -83,3 +85,7 @@ class Game:
 
     def select_next_character(self):
         self.selected_character = self.teams[self.turn].get_next_character(self.selected_character)
+
+    def give_up(self):
+        self.teams[self.turn].set_life(0)
+        self.change_turn()

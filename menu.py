@@ -5,7 +5,7 @@ from utils import Button, Font
 HEART_IMAGE = pygame.transform.scale(pygame.image.load("resources/images/heart_small.png"), (40, 40))
 
 class Menu:
-    def __init__(self, change_turn, buy_miner, buy_soldier):
+    def __init__(self, change_turn, buy_miner, buy_soldier, give_up):
         self.bar_width = 3
         self.menu_width = MENU_WIDTH - self.bar_width
 
@@ -15,7 +15,9 @@ class Menu:
                                           30, buy_miner, text="Buy Miner (M)")
         buy_soldier_button = Button(10, 500, self.menu_width - 20,
                                           30, buy_soldier, text="Buy Soldier (S)")
-        self.button_list = [change_turn_button, buy_miner_button, buy_soldier_button]
+        give_up_button = Button(10, 550, self.menu_width - 20,
+                                          30, give_up, text="Give Up (G)")
+        self.button_list = [change_turn_button, buy_miner_button, buy_soldier_button, give_up_button]
 
     def draw(self, surface, teams, turn, size="medium"):
         if teams[turn].get_name() == "Red":
