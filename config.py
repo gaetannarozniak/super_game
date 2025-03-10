@@ -2,8 +2,8 @@ FPS: int = 20
 
 TEAMS = ["Red", "Blue"]
 TERRAINS = ["grass", "grass_2", "flowers", "gold", "tree"]
-CHARACTERS = ["miner_red", "miner_blue", "soldier_red", "soldier_blue"]
-BUILDINGS = ["base_red", "base_blue"]
+CHARACTERS = ["miner_red", "miner_blue", "soldier_red", "soldier_blue"] # for images loading
+BUILDINGS = ["base_red", "base_blue"] # for images loading
 
 N_TILES_X = 20
 N_TILES_Y = 20
@@ -18,3 +18,4 @@ SCREEN_HEIGHT = MAP_HEIGHT
 MIN_WINDOW_WIDTH = 400
  
 MINER_SPEED: int = 5
+SOLDIER_SPEED: int = 7

@@ -1,6 +1,6 @@
 import pygame
 from abc import abstractmethod, ABC
-from config import TILE_SIZE, CHARACTERS, BUILDINGS
+from config import TILE_SIZE, CHARACTERS, BUILDINGS, MINER_SPEED, SOLDIER_SPEED
 from utils import load_images
 
 CHARACTER_IMAGES = load_images("character", CHARACTERS)
@@ -84,10 +84,11 @@ class Building(Entity, ABC):
         del self
 
 class Miner(Character):
+    speed = MINER_SPEED
     gold_cost = 100
 
     def __init__(self, tile, team):
-        super().__init__(tile=tile, team=team, speed=10)
+        super().__init__(tile=tile, team=team, speed=self.speed)
 
     def draw(self, figure, x, y):
         if self.team.get_name() == "Red":
@@ -111,10 +112,11 @@ class Miner(Character):
     
 
 class Soldier(Character):
+    speed = MINER_SPEED
     gold_cost = 200
 
     def __init__(self, tile, team):
-        super().__init__(tile=tile, team=team, speed=10)
+        super().__init__(tile=tile, team=team, speed=self.speed)
 
     def draw(self, figure, x, y):
         if self.team.get_name() == "Red":
