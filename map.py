@@ -1,4 +1,4 @@
-from config import N_TILES_X, N_TILES_Y, TILE_SIZE 
+from config import N_TILES_X, N_TILES_Y, TILE_SIZE, BASE_COORDS
 from generate_map import generate_map
 from collections import deque
 
@@ -60,4 +60,4 @@ class Map:
         return neighbours
     
     def get_base_tiles(self): # return the tiles of the teams base
-        return [self.tiles[3][3], self.tiles[N_TILES_X-4][N_TILES_Y-4]]
+        return [self.tiles[i][j] for (i, j) in BASE_COORDS]

@@ -7,6 +7,7 @@ BUILDINGS = ["base_red", "base_blue"] # for images loading
 
 N_TILES_X = 20
 N_TILES_Y = 20
+BASE_COORDS = [(1, 1), (N_TILES_X-2, N_TILES_Y-2)]
 TILE_SIZE = 40
 
 MENU_WIDTH = 200
