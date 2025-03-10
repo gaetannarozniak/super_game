@@ -1,6 +1,6 @@
 import pygame
-from config import TILE_SIZE, TERRAINS
-from utils import load_images
+from .config import TILE_SIZE, TERRAINS
+from .utils import load_images
 
 import random
 

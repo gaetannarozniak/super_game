@@ -1,8 +1,8 @@
 import pygame
-from config import MENU_WIDTH, SCREEN_HEIGHT
-from utils import Button, Font
+from .config import MENU_WIDTH, SCREEN_HEIGHT
+from .utils import Button, Font
 
-HEART_IMAGE = pygame.transform.scale(pygame.image.load("resources/images/heart_small.png"), (40, 40))
+HEART_IMAGE = pygame.transform.scale(pygame.image.load("game/resources/images/heart_small.png"), (40, 40))
 
 class Menu:
     def __init__(self, change_turn, buy_miner, buy_soldier, give_up):

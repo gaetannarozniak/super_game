@@ -6,7 +6,7 @@
 import pygame
 import sys
 import traceback  # Import the traceback module
-from scene_gestion import SceneGestion
+from game.scene_gestion import SceneGestion
 
 if __name__ == "__main__":
     scene_gestion = SceneGestion()

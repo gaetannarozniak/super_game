@@ -1,5 +1,5 @@
-from utils import Button, Font, load_images
-from config import SCREEN_WIDTH, SCREEN_HEIGHT, FPS
+from .utils import Button, Font, load_images
+from .config import SCREEN_WIDTH, SCREEN_HEIGHT, FPS
 
 import pygame
 import random
@@ -10,7 +10,7 @@ class Assets:
     MINER_IMAGES = [load_images("background", [f"miner_{i}"], size_x=100, size_y=100)[f"miner_{i}"] for i in range(1, 4)]
     SOLDIER_IMAGES = [load_images("background", [f"soldier_{i}"], size_x=100, size_y=100)[f"soldier_{i}"] for i in range(1, 4)]
     BACKGROUND = pygame.transform.scale(
-        pygame.image.load("resources/images/home_page.jpg"), 
+        pygame.image.load("game/resources/images/home_page.jpg"), 
         (SCREEN_WIDTH, SCREEN_HEIGHT)
     )
 

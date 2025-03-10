@@ -1,7 +1,6 @@
-import pygame
 from abc import abstractmethod, ABC
-from config import TILE_SIZE, CHARACTERS, BUILDINGS, MINER_SPEED, SOLDIER_SPEED
-from utils import load_images
+from .config import TILE_SIZE, CHARACTERS, BUILDINGS, MINER_SPEED, SOLDIER_SPEED
+from .utils import load_images
 
 CHARACTER_IMAGES = load_images("character", CHARACTERS)
 BUILDING_IMAGES = load_images("building", BUILDINGS)

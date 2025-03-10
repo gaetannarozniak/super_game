@@ -1,5 +1,5 @@
-from config import N_TILES_X, N_TILES_Y, TILE_SIZE, BASE_COORDS
-from generate_map import generate_map
+from .config import N_TILES_X, N_TILES_Y, TILE_SIZE, BASE_COORDS
+from .generate_map import generate_map
 from collections import deque
 
 class Map:

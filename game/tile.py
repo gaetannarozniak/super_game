@@ -1,6 +1,5 @@
-from terrains import Terrain
-from entities import Character, Building
-from collections import deque
+from .terrains import Terrain
+from .entities import Character, Building
 
 class Tile:
     def __init__(self, i, j, terrain:Terrain = Terrain("grass")):

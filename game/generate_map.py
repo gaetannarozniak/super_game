@@ -1,10 +1,8 @@
-import random
-from config import N_TILES_X, N_TILES_Y, MINER_SPEED, BASE_COORDS
-from terrains import Terrain
-from tile import Tile
+from .config import N_TILES_X, N_TILES_Y, MINER_SPEED, BASE_COORDS
+from .terrains import Terrain
+from .tile import Tile
 import numpy as np
 from perlin_numpy import generate_fractal_noise_2d # pip3 install git+https://github.com/pvigier/perlin-numpy
-from collections import deque
 
 def is_near_base(i, j):
     def d(i1, j1, i2, j2):

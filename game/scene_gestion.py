@@ -1,8 +1,8 @@
-from game import Game
-from home_page import HomePage
-from end_page import EndPage
-from config import TEAMS, FPS, SCREEN_WIDTH, SCREEN_HEIGHT
-from utils import Font
+from .game import Game
+from .home_page import HomePage
+from .end_page import EndPage
+from .config import TEAMS, FPS, SCREEN_WIDTH, SCREEN_HEIGHT
+from .utils import Font
 
 import pygame
 import sys
@@ -12,7 +12,7 @@ class SceneGestion:
         pygame.init()
         pygame.mixer.init() 
 
-        pygame.mixer.music.load("resources/music/music.mp3")
+        pygame.mixer.music.load("game/resources/music/music.mp3")
         pygame.mixer.music.play(-1)
 
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))

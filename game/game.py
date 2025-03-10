@@ -1,8 +1,8 @@
-from map import Map
-from menu import Menu
-from team import Team
-from display_game import DisplayGame
-from entities import Character, Miner, Soldier
+from .map import Map
+from .menu import Menu
+from .team import Team
+from .display_game import DisplayGame
+from .entities import Character, Miner, Soldier
 
 import pygame
 

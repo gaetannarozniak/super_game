@@ -1,4 +1,4 @@
-from entities import Base, Miner, Soldier, Character
+from .entities import Base, Character
 
 class Team:
     def __init__(self, name, base_tile):

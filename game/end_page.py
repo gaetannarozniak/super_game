@@ -1,5 +1,5 @@
-from utils import Button, Font
-from config import SCREEN_WIDTH, SCREEN_HEIGHT
+from .utils import Button, Font
+from .config import SCREEN_WIDTH, SCREEN_HEIGHT
 
 import pygame
 
@@ -8,7 +8,7 @@ class EndPage:
         self.screen = screen
         self.winner = winner
         self.button = Button(SCREEN_WIDTH//2 - 100, SCREEN_HEIGHT//2 - 50, 200, 50, lambda: "home", "Play Again ? ")
-        self.background = pygame.image.load("resources/images/home_page.jpg")
+        self.background = pygame.image.load("game/resources/images/home_page.jpg")
         self.background = pygame.transform.scale(self.background, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
     def handle_event(self, event):
