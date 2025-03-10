@@ -1,121 +1,80 @@
 from utils import Button, Font, load_images
-from config import SCREEN_WIDTH, SCREEN_HEIGHT
+from config import SCREEN_WIDTH, SCREEN_HEIGHT, FPS
 
 import pygame
 import random
 
-DUCK_IMAGES = load_images("background", ["duck_1", "duck_2", "duck_3"], size_x=60, size_y=60)
-MINER_IMAGES = load_images("background", ["miner_1", "miner_2", "miner_3"], size_x=100, size_y=100)
-SOLDIER_IMAGES = load_images("background", ["soldier_1", "soldier_2", "soldier_3"], size_x=100, size_y=100)
+# Centralisation des images
+class Assets:
+    DUCK_IMAGES = [load_images("background", [f"duck_{i}"], size_x=60, size_y=60)[f"duck_{i}"] for i in range(1, 4)]
+    MINER_IMAGES = [load_images("background", [f"miner_{i}"], size_x=100, size_y=100)[f"miner_{i}"] for i in range(1, 4)]
+    SOLDIER_IMAGES = [load_images("background", [f"soldier_{i}"], size_x=100, size_y=100)[f"soldier_{i}"] for i in range(1, 4)]
+    BACKGROUND = pygame.transform.scale(
+        pygame.image.load("resources/images/home_page.jpg"), 
+        (SCREEN_WIDTH, SCREEN_HEIGHT)
+    )
 
+# Classe générique pour les personnages animés
+class Character:
+    def __init__(self, images, x_range, y_range, speed_range):
+        self.images = images
+        self.x = SCREEN_WIDTH + random.randint(*x_range)
+        self.y = random.randint(*y_range)
+        self.speed = random.randint(*speed_range)
+        self.time = random.randint(0, 10)
+        self.current_frame = random.randint(0, len(images) - 1)
+        self.speed_range = speed_range
+        self.x_range = x_range
+
+    def update(self, duration):
+        self.time += 1
+        self.current_frame = (self.time // duration) % len(self.images)
+        self.x -= self.speed
+
+        # Réapparition après sortie de l'écran
+        if self.x < -100:
+            self.x = SCREEN_WIDTH + random.randint(*self.x_range)
+            self.time = 0
+            self.speed = random.randint(*self.speed_range)  # Peut être ajusté dynamiquement
+
+    def draw(self, screen):
+        screen.blit(self.images[self.current_frame], (self.x, self.y))
+
+# Classe pour la page d'accueil
 class HomePage:
     def __init__(self, screen):
         self.screen = screen
         self.button = Button(SCREEN_WIDTH//2 - 100, SCREEN_HEIGHT//2 - 50, 200, 50, lambda: "game", "Start")
-        self.background = pygame.image.load("resources/images/home_page.jpg")
-        self.background = pygame.transform.scale(self.background, (SCREEN_WIDTH, SCREEN_HEIGHT))
-        self.time = 0
+        self.duration_image = FPS // 10
 
-        self.time = 0
-        self.duration_image = 6
+        height = SCREEN_HEIGHT * 550 // 800
 
-        self.num_ducks = 6
-        self.ducks = []
-        for _ in range(self.num_ducks):
-            duck = {
-                "current_image": random.randint(1, 3), 
-                "duck_x": SCREEN_WIDTH + random.randint(50, 2000), 
-                "duck_y": random.randint(50, 200), 
-                "duck_speed": random.randint(3, 5),
-                "time": random.randint(0, 10),
-            }
-            self.ducks.append(duck)
-
-        self.number_miners = 4
-        self.miners = []
-        for _ in range(self.number_miners):
-            miner = {
-                "current_image": random.randint(1, 3), 
-                "miner_x": SCREEN_WIDTH + random.randint(50, 2000), 
-                "miner_y": 400, 
-                "miner_speed": random.randint(3, 5),
-                "time": random.randint(0, 10),
-            }
-            self.miners.append(miner)
-
-        self.number_soldiers = 2
-        self.soldiers = []
-        for _ in range(self.number_soldiers):
-            soldier = {
-                "current_image": random.randint(1, 3), 
-                "soldier_x": SCREEN_WIDTH + random.randint(50, 2000), 
-                "soldier_y": 400, 
-                "soldier_speed": random.randint(6, 7),
-                "time": random.randint(0, 10),
-            }
-            self.soldiers.append(soldier)
+        # Création des personnages avec des paramètres dynamiques
+        self.characters = [
+            *[Character(Assets.DUCK_IMAGES, (50, 1000), (50, 200), (7, 9)) for _ in range(6)],
+            *[Character(Assets.MINER_IMAGES, (50, 1000), (height, height), (8, 11)) for _ in range(4)],
+            *[Character(Assets.SOLDIER_IMAGES, (50, 1000), (height, height), (12, 15)) for _ in range(2)]
+        ]
 
     def handle_event(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if self.button.rect.collidepoint(event.pos):
-                return self.button.callback()
+        if event.type == pygame.MOUSEBUTTONDOWN and self.button.rect.collidepoint(event.pos):
+            return self.button.callback()
         return False
-    
-    def update_ducks(self):
-        for duck in self.ducks:
-            duck["time"] += 1
-            duck["current_image"] = (duck["time"] // self.duration_image) % 3 + 1
-            duck["duck_x"] -= duck["duck_speed"]
-            
-            if duck["duck_x"] < -100:
-                duck["duck_x"] = SCREEN_WIDTH + random.randint(50, 200)
-                duck["duck_y"] = random.randint(50, 200)
-                duck["time"] = 0
-                duck["duck_speed"] = random.randint(3, 5)
 
-    def update_miner(self):
-        for miner in self.miners:
-            miner["time"] += 1
-            miner["current_image"] = (miner["time"] // self.duration_image) % 3 + 1
-            miner["miner_x"] -= miner["miner_speed"]
-            
-            if miner["miner_x"] < -100:
-                miner["miner_x"] = SCREEN_WIDTH + random.randint(50, 200)
-                miner["time"] = 0
-                miner["miner_speed"] = random.randint(3, 5)
+    def update(self):
+        for character in self.characters:
+            character.update(self.duration_image)
 
-    def update_soldier(self):
-        for soldier in self.soldiers:
-            soldier["time"] += 1
-            soldier["current_image"] = (soldier["time"] // self.duration_image) % 3 + 1
-            soldier["soldier_x"] -= soldier["soldier_speed"]
-            
-            if soldier["soldier_x"] < -100:
-                soldier["soldier_x"] = SCREEN_WIDTH + random.randint(1500, 2000)
-                soldier["time"] = 0
-                soldier["soldier_speed"] = random.randint(5, 7)
-    
     def display(self):
         self.screen.fill((255,255,255))
-        self.screen.blit(self.background, (0, 0))
+        self.screen.blit(Assets.BACKGROUND, (0, 0))
 
-        self.update_ducks()
-        for duck in self.ducks:
-            self.screen.blit(DUCK_IMAGES[f"duck_{duck['current_image']}"], (duck["duck_x"], duck["duck_y"]))
+        self.update()
+        for character in self.characters:
+            character.draw(self.screen)
 
-        self.update_miner()
-        for miner in self.miners:
-            self.screen.blit(MINER_IMAGES[f"miner_{miner['current_image']}"], (miner["miner_x"], miner["miner_y"]))
-
-        self.update_soldier()
-        for soldier in self.soldiers:
-            self.screen.blit(SOLDIER_IMAGES[f"soldier_{soldier['current_image']}"], (soldier["soldier_x"], soldier["soldier_y"]))
-
+        # Affichage du texte et des boutons
         self.screen.blit(Font.render("Welcome to super game", "large", color=(255, 255, 255)), (SCREEN_WIDTH//2 - 200, 100))
-        
         self.button.draw(self.screen, "medium")
+
         pygame.display.flip()
-
-
-        
-        
