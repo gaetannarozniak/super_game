@@ -28,6 +28,9 @@ class Map:
             raise ValueError(f"The tile ({i}, {j}) does not exist")
         return self.tiles[i][j]
 
+    def get_tile_array(self):
+        return self.tiles
+
     def get_accessible_tiles(self, character):
         reachable_tiles = self.get_reachable_tiles(character)
         accessible_tiles = [tile for tile in reachable_tiles if tile.is_occupiable(character)]

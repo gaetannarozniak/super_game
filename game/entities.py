@@ -19,6 +19,9 @@ class Entity(ABC): # cannot instantiate abstract class Entity
 
     def get_tile(self):
         return self.tile
+
+    def get_coordinates(self):
+        return self.tile.i, self.tile.j
     
     @abstractmethod
     def die(self):

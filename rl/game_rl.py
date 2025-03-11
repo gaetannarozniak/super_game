@@ -7,7 +7,7 @@ from .display_game_rl import DisplayGameRL
 class GameRL:
     def __init__(self, list_teams=TEAMS, screen=None):
         self.map = Map()
-        self.teams = [Team(list_teams[i]) for i in range(len(list_teams))]
+        self.teams = [Team(team_name) for team_name in TEAMS]
         self.selected_character = None
         self.turn = 0
 
