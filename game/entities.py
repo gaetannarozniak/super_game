@@ -62,6 +62,12 @@ class Character(Entity, ABC):
     def can_walk_on(self, other: Entity):
         pass        
 
+    def get_rl_id(self):
+        team_id = self.team.get_rl_id()
+        character_id = self.rl_id
+        return character_id + team_id*len(Character.__subclasses__())
+
+
 class Building(Entity, ABC):
     def __init__(self, tile, team, life):
         super().__init__(tile, team)
@@ -88,6 +94,7 @@ class Building(Entity, ABC):
 class Miner(Character):
     speed = MINER_SPEED
     gold_cost = 100
+    rl_id = 0
 
     def __init__(self, tile, team):
         super().__init__(tile=tile, team=team, speed=self.speed)
@@ -116,6 +123,7 @@ class Miner(Character):
 class Soldier(Character):
     speed = SOLDIER_SPEED
     gold_cost = 200
+    rl_id = 1
 
     def __init__(self, tile, team):
         super().__init__(tile=tile, team=team, speed=self.speed)
@@ -163,3 +171,6 @@ class Base(Building):
     # True if there is no character on the base, in order to buy a new one
     def is_empty(self):
         return not self.tile.has_character()
+
+    def get_rl_id(self):
+        return self.team.get_rl_id()

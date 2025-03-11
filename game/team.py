@@ -1,4 +1,5 @@
 from .entities import Base, Character
+from .config import TEAMS
 
 class Team:
     def __init__(self, name, base_tile):
@@ -59,3 +60,6 @@ class Team:
 
     def get_nb_character(self):
         return len([e for e in self.entities if isinstance(e, Character)])
+
+    def get_rl_id(self):
+        return TEAMS.index(self.name)

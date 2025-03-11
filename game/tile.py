@@ -1,5 +1,7 @@
+import pygame
 from .terrains import Terrain
 from .entities import Character, Building
+from .config import DISPLAY_TILE_IDS, TILE_SIZE
 
 class Tile:
     def __init__(self, i, j, terrain:Terrain = Terrain("grass")):
@@ -15,6 +17,10 @@ class Tile:
             self.building.draw(figure, self.i, self.j)
         if self.character is not None:
             self.character.draw(figure, self.i, self.j)
+        if DISPLAY_TILE_IDS:
+            font = pygame.font.Font(None, 16)
+            text_surface = font.render(str(self.get_rl_id()), True, (0,0,0))
+            figure.blit(text_surface, (self.i*TILE_SIZE, self.j*TILE_SIZE))
 
     # is it allowed for the character to pass by the tile
     def is_crossable(self, character):
@@ -78,4 +84,7 @@ class Tile:
 
     def get_rl_id(self):
         terrain_id = self.terrain.get_rl_id()
+        character_id = 0 if self.character is None else 1 + self.character.get_rl_id()
+        base_id = 0 if self.building is None else 1 + self.building.get_rl_id()
+        return [terrain_id, character_id, base_id]
         

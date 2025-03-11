@@ -1,4 +1,5 @@
 FPS: int = 20
+DISPLAY_TILE_IDS = False
 
 TEAMS = ["Red", "Blue"]
 TERRAINS = ["grass", "gold", "tree"]
