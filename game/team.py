@@ -16,8 +16,8 @@ class Team:
             return moveable_characters[0]
         index = moveable_characters.index(current_character)
         return moveable_characters[(index+1) % len(moveable_characters)]
-        
 
+        
     def add_entity(self, entity):
         if entity in self.entities:
             return ValueError("the entity we want to add to the team is already in the team")
@@ -33,7 +33,7 @@ class Team:
             raise TypeError("impossible to buy {unit_class} character")
         if not self.base.is_empty():
             print("there is already a character on the base")
-            return
+            return None
         if self.gold >= unit_class.gold_cost:
             self.gold -= unit_class.gold_cost
             return unit_class(self.base.get_tile(), team=self)
@@ -56,3 +56,6 @@ class Team:
     
     def set_life(self, life):
         self.base.set_life(life)
+
+    def get_nb_character(self):
+        return len([e for e in self.entities if isinstance(e, Character)])
