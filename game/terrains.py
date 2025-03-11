@@ -4,7 +4,7 @@ from .utils import load_images
 
 import random
 
-TERRAIN_IMAGES = load_images("terrain", TERRAINS)
+TERRAIN_IMAGES = load_images("terrain", TERRAINS+["flowers", "grass_2"])
 
 class Terrain:
     def __init__(self, terrain_type:str):
