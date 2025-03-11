@@ -3,9 +3,6 @@ from game.team import Team
 from game.entities import Character, Miner, Soldier
 from game.config import TEAMS
 from .display_game_rl import DisplayGameRL
-from game.config import MAP_WIDTH, MAP_HEIGHT
-
-import pygame
 
 class GameRL:
     def __init__(self, list_teams=TEAMS, screen=None):
@@ -85,7 +82,8 @@ class GameRL:
         if self.selected_character is None or self.teams[self.turn].get_nb_character() == 0:
             return "Invalid action"
         return "Next character"
-    
+
+"""   
 class RunAgents:
     def __init__(self, agent_1, agent_2):
         self.agent_1 = agent_1
@@ -99,3 +97,13 @@ class RunAgents:
     def run(self):
         clock = pygame.time.Clock()
         running = True
+        turn = 0
+        while running:
+            self.game.display()
+            if turn == 0:
+                action = self.agent_1.get_action(self.game.get_obs)
+            else:
+                action = self.agent_2.get_action(self.game)
+            self.game.handle_action(*action)
+            turn = (turn+1) % 2
+            clock.tick(FPS)"""
