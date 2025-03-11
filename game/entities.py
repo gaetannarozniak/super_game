@@ -60,7 +60,7 @@ class Character(Entity, ABC):
 
     @abstractmethod
     def can_walk_on(self, other: Entity):
-        pass
+        pass        
 
 class Building(Entity, ABC):
     def __init__(self, tile, team, life):

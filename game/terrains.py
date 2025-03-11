@@ -36,3 +36,6 @@ class Terrain:
         
     def is_crossable(self):
         return self.terrain_type != "tree"
+
+    def get_rl_id(self):
+        return TERRAINS.index(self.terrain_type)

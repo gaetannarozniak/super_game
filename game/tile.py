@@ -75,3 +75,7 @@ class Tile:
     
     def set_terrain_type(self, terrain_type):
         self.terrain.set_terrain_type(terrain_type)
+
+    def get_rl_id(self):
+        terrain_id = self.terrain.get_rl_id()
+        
