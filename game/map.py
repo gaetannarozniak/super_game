@@ -65,3 +65,6 @@ class Map:
     
     def get_base_tiles(self): # return the tiles of the teams base
         return [self.tiles[i][j] for (i, j) in BASE_COORDS]
+
+    def get_dimensions(self):
+        return (N_TILES_X, N_TILES_Y)

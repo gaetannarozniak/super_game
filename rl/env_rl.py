@@ -4,18 +4,17 @@ from game.entities import Character
 from game.team import Team
 from game.map import Map
 from .game_rl import GameRL
+from .config_rl import GOLD_REWARD, LIFE_REWARD
 from abc import ABC
 
 print("jeu")
 
-class Reward:
-    gold_reward = 0.01
-    life_reward = 10 
-
+class TeamValue:
+    # computes the value of a given team given an obs (reward = value_after_step - value_before_step)
     def __init__(self, n_teams: int):
         self.n_teams = n_teams
 
-    def team_reward(self, obs: Obs, team_id: int):
+    def team_value(self, obs: Obs, team_id: int):
         r = 0
         r += obs.team_gold(team_id) * self.gold_reward
         r += obs.team_lives(team_id) * self.life_reward
@@ -27,10 +26,10 @@ class Reward:
         r = 0
         for i in range(self.n_teams):
             if i==team_id:
-                r += self.team_reward(obs, i)
+                r += self.team_value(obs, i)
             else:
-                r -= self.team_reward(obs, i)
-        return r
+                r -= self.team_value(obs, i)
+        return r 
 
 
 class Obs:
@@ -64,7 +63,7 @@ class Env:
 
     def __init__(self, team_id):
         self.team_id = team_id
-        self.reward_model = Reward(n_teams=len(self.game.get_teams()))
+        self.value_model = TeamValue(n_teams=len(self.game.get_teams()))
         self.game = GameRL() 
         self.action_types = self.game.get_action_types_names()
         self.n_action_types = len(self.action_types)
@@ -80,8 +79,16 @@ class Env:
     def reset(self):
         pass
 
-    def step(self, action):
+    def step(self, action, team_id: int):
+        prev_obs = self.get_game_obs()
+        prev_value = self.value_model(prev_obs, team_id)
+
+        action_type = self.action_types[action["type"]]
+        action_tile = self.action["movement_tile"]
+        penalty = self.game.handle_action(action_type, action_tile)
+
         obs = self.get_game_obs()
-        reward = self.compute_reward(obs)
-        pass 
+        value = self.value_model(obs, team_id)
+        reward = value - prev_value + penalty
+        return obs, reward, False, False, None
 

@@ -3,6 +3,7 @@ from game.team import Team
 from game.entities import Character, Miner, Soldier
 from game.config import TEAMS
 from .display_game_rl import DisplayGameRL
+from .config_rl import PENALTY
 
 class GameRL:
     def __init__(self, list_teams=TEAMS, screen=None):
@@ -14,12 +15,13 @@ class GameRL:
         if screen is not None:
             self.display_game = DisplayGameRL(self.map, screen)
 
-    def handle_action(self, action_type, *args):
+    def handle_action(self, action_type, action_tile):
         action_method = getattr(self, action_type, None)
         if callable(action_method):
-            action_method(*args)
+            if action_method == self.move_character:
+                return action_method(*action_tile)
+            return action_method()
         else:
-            print(f"Invalid action: {action_type}")
             raise ValueError(f"Action '{action_type}' not found")
         
     def display(self):
@@ -29,15 +31,15 @@ class GameRL:
         new_miner = self.teams[self.turn].buy_character(Miner)
         selected_character = new_miner
         if selected_character is None:
-            return "Invalid action"
-        return "Success"
+            return PENALTY
+        return 0
         
     def buy_soldier(self):
         new_soldier = self.teams[self.turn].buy_character(Soldier)
         selected_character = new_soldier
         if selected_character is None:
-            return "Invalid action"
-        return "Success"
+            return PENALTY
+        return 0
         
     def change_turn(self):
         self.selected_character = None
@@ -46,15 +48,15 @@ class GameRL:
                 entity.moved = False
         self.turn = (self.turn+1) % len(self.teams)
         self.select_next_character()
-        return "Change turn"
+        return 0
     
     def move_character(self, i,j):
         tile = self.map.get_tile_ij(i,j)
 
         if self.selected_character is None:
-            return "Invalid action"
+            return PENALTY
         if not (tile in self.map.get_accessible_tiles(self.selected_character)):
-            return "Invalid action"
+            return PENALTY
         
         if self.selected_character.get_team() != self.teams[self.turn]:
             raise ValueError("Selected Character not in the good team !")
@@ -63,8 +65,14 @@ class GameRL:
         
         self.selected_character.move_tile(tile)
         self.select_next_character()
-        return "Success"
+        return 0
         
+    def select_next_character(self):
+        self.selected_character = self.teams[self.turn].get_next_character(self.selected_character)
+        if self.selected_character is None or self.teams[self.turn].get_nb_character() == 0:
+            return PENALTY
+        return 0
+
     def get_map(self):
         return self.map
     
@@ -76,12 +84,10 @@ class GameRL:
     
     def get_type_action_names(self):
         return["buy_miner", "buy_soldier", "change_turn", "select_next_character", "move_character"]
+
+    def get_map_dimensions(self):
+        return self.map.get_dimensions()
     
-    def select_next_character(self):
-        self.selected_character = self.teams[self.turn].get_next_character(self.selected_character)
-        if self.selected_character is None or self.teams[self.turn].get_nb_character() == 0:
-            return "Invalid action"
-        return "Next character"
 
 """   
 class RunAgents:
