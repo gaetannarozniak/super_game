@@ -62,3 +62,6 @@ class Team:
 
     def get_rl_id(self):
         return TEAMS.index(self.name)
+
+    def get_entities(self):
+        return self.entities
