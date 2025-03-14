@@ -61,7 +61,7 @@ class Client:
             self.button.draw(screen, "medium")
             pygame.display.flip()
         else:
-            self.game.display(screen)
+            self.game.display(screen, display_menu=(self.player == self.game.get_turn()))
 
     def event_to_dict(self, event):
         return {"type": event.type, **event.dict}

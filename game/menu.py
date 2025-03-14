@@ -19,7 +19,7 @@ class Menu:
                                           30, give_up, text="Give Up (G)")
         self.button_list = [change_turn_button, buy_miner_button, buy_soldier_button, give_up_button]
 
-    def draw(self, surface, teams, turn, size="medium"):
+    def draw(self, surface, teams, turn, size="medium", display_menu = True):
         if teams[turn].get_name() == "Red":
             surface.fill((255, 150, 150))
         else:
@@ -37,9 +37,9 @@ class Menu:
         surface.blit(Font.render("Team " + teams[1].get_name() + " Life : ", size), (10, 175))
         for i in range(teams[1].get_life()):
             surface.blit(HEART_IMAGE, (Font.render("Team " + teams[1].get_name() + " Life : ", size).get_width() + 10 + i * 20, 165))
-        
-        for button in self.button_list:
-            button.draw(surface, size)
+        if display_menu:
+            for button in self.button_list:
+                button.draw(surface, size)
 
     def click(self, x, y):
         for button in self.button_list:

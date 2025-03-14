@@ -48,8 +48,8 @@ class Game:
             return "Red"
         return None
 
-    def display(self, screen):
-        self.display_game.display(screen, self.selected_character, self.teams, self.turn)
+    def display(self, screen, display_menu = True):
+        self.display_game.display(screen, self.selected_character, self.teams, self.turn, display_menu = display_menu)
 
     def left_click(self, x, y):
         tile_clicked = self.map.get_tile(x, y)

@@ -14,9 +14,9 @@ class DisplayGame:
             "map": pygame.Rect(MENU_WIDTH, 0, MAP_WIDTH, SCREEN_HEIGHT)
         }
 
-    def display(self, screen, selected_character, teams, turn):
+    def display(self, screen, selected_character, teams, turn, display_menu = True):
         self.map.draw(self.map_surface, selected_character)
-        self.menu.draw(self.menu_surface, teams, turn)
+        self.menu.draw(self.menu_surface, teams, turn, display_menu = display_menu)
 
         screen.blit(self.menu_surface, self.rect_dict["menu"].topleft)
         screen.blit(self.map_surface, self.rect_dict["map"].topleft)

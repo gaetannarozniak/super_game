@@ -9,17 +9,22 @@ class Server:
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.bind((IP, PORT))
         self.server.listen(2)
-        self.player = 0
         self.seed = np.random.randint(10000)
         self.ready = False
+        self.online = [False, False]
         self.events = [None, None]
 
+    def choose_player(self):
+        if not self.online[0]:
+            return 0
+        elif not self.online[1]:
+            return 1
+
     def threaded_client(self, conn):
-        conn.send(pickle.dumps([self.player, self.seed]))
-        player = self.player
-        self.player += 1
-        if player == 1:
-            self.ready = True
+        player = self.choose_player()
+        self.online[player] = True
+        conn.send(pickle.dumps([player, self.seed]))
+        self.ready = self.online[0] and self.online[1]
         while True:
             try:
                 data = pickle.loads(conn.recv(2048))
@@ -43,9 +48,9 @@ class Server:
             except:
                 break
 
-        print("Lost connection")
-        self.player = player
+        print("Lost connection to:", player)
         self.events = [None, None]
+        self.online[player] = False
         self.ready = False
         conn.close()
 
