@@ -14,9 +14,10 @@ def is_valid_generation(tiles):
     return True
         
 
-def generate_map(gold_threshold=-0.5, tree_threshold=0.25, res=5, seed=np.random.randint(10000)): # gold < grass < tree 
+def generate_map(gold_threshold=-0.5, tree_threshold=0.25, res=5, seed=None): # gold < grass < tree 
     tiles_type = [["grass" for _ in range(N_TILES_Y)] for _ in range(N_TILES_X)]
-
+    if seed is None:
+        seed = np.random.randint(10000)
     np.random.seed(seed)
     noise = generate_fractal_noise_2d((N_TILES_X, N_TILES_Y), (res, res), 2)
     for i in range(N_TILES_X):

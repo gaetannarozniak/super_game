@@ -42,9 +42,10 @@ class Character:
 
 # Classe pour la page d'accueil
 class HomePage:
-    def __init__(self, screen):
-        self.screen = screen
-        self.button = Button(SCREEN_WIDTH//2 - 100, SCREEN_HEIGHT//2 - 50, 200, 50, lambda: "game", "Start")
+    def __init__(self):
+        self.button_start = Button(SCREEN_WIDTH//2 - 100, SCREEN_HEIGHT//2 - 50, 200, 50, lambda: "game", "Start")
+        self.button_online = Button(SCREEN_WIDTH//2 - 100, SCREEN_HEIGHT//2 + 50, 200, 50, lambda: "online", "Online")
+
         self.duration_image = FPS // 10
 
         height = SCREEN_HEIGHT * 550 // 800
@@ -57,24 +58,25 @@ class HomePage:
         ]
 
     def handle_event(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN and self.button.rect.collidepoint(event.pos):
-            return self.button.callback()
-        return False
+        if event.type == pygame.MOUSEBUTTONDOWN and self.button_start.rect.collidepoint(event.pos):
+            return self.button_start.callback()
+        if event.type == pygame.MOUSEBUTTONDOWN and self.button_online.rect.collidepoint(event.pos):
+            return self.button_online.callback()
+        return None
 
     def update(self):
         for character in self.characters:
             character.update(self.duration_image)
 
-    def display(self):
-        self.screen.fill((255,255,255))
-        self.screen.blit(Assets.BACKGROUND, (0, 0))
+    def display(self, screen):
+        screen.blit(Assets.BACKGROUND, (0, 0))
 
         self.update()
         for character in self.characters:
-            character.draw(self.screen)
+            character.draw(screen)
 
-        # Affichage du texte et des boutons
-        self.screen.blit(Font.render("Welcome to super game", "large", color=(255, 255, 255)), (SCREEN_WIDTH//2 - 200, 100))
-        self.button.draw(self.screen, "medium")
+        screen.blit(Font.render("Welcome to super game", "large", color=(255, 255, 255)), (SCREEN_WIDTH//2 - 200, 100))
+        self.button_start.draw(screen, "medium")
+        self.button_online.draw(screen, "medium")
 
         pygame.display.flip()

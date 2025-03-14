@@ -7,11 +7,12 @@ from .entities import Character, Miner, Soldier
 import pygame
 
 class Game:
-    def __init__(self, list_teams, screen):
-        self.map = Map()
+    def __init__(self, list_teams, seed = None):
+        self.seed = seed
+        self.map = Map(self.seed)
         self.menu = Menu(self.change_turn, self.buy_miner, self.buy_soldier, self.give_up)
 
-        self.display_game = DisplayGame(self.map, self.menu, screen)
+        self.display_game = DisplayGame(self.map, self.menu)
 
         base_tiles = self.map.get_base_tiles()
         self.teams = [Team(list_teams[i], base_tiles[i]) for i in range(len(list_teams))]
@@ -45,10 +46,10 @@ class Game:
             return "Blue"
         elif self.teams[1].get_life() == 0:
             return "Red"
-        return False
+        return None
 
-    def display(self):
-        self.display_game.display(self.selected_character, self.teams, self.turn)
+    def display(self, screen):
+        self.display_game.display(screen, self.selected_character, self.teams, self.turn)
 
     def left_click(self, x, y):
         tile_clicked = self.map.get_tile(x, y)
@@ -77,11 +78,13 @@ class Game:
 
     def buy_miner(self):
         new_miner = self.teams[self.turn].buy_character(Miner)
-        self.selected_character = new_miner
+        if new_miner is not None:
+            self.selected_character = new_miner
 
     def buy_soldier(self):
         new_soldier = self.teams[self.turn].buy_character(Soldier)
-        self.selected_character = new_soldier
+        if new_soldier is not None:
+            self.selected_character = new_soldier
 
     def select_next_character(self):
         self.selected_character = self.teams[self.turn].get_next_character(self.selected_character)
@@ -89,3 +92,6 @@ class Game:
     def give_up(self):
         self.teams[self.turn].set_life(0)
         self.change_turn()
+
+    def get_turn(self):
+        return self.turn

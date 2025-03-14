@@ -2,10 +2,9 @@ import pygame
 from .config import SCREEN_WIDTH, SCREEN_HEIGHT, MENU_WIDTH, MAP_WIDTH, MAP_HEIGHT
 
 class DisplayGame:
-    def __init__(self, map, menu, screen):
+    def __init__(self, map, menu):
         self.map = map
         self.menu = menu
-        self.screen = screen
 
         self.menu_surface = pygame.Surface((MENU_WIDTH, SCREEN_HEIGHT))
         self.map_surface = pygame.Surface((MAP_WIDTH, MAP_HEIGHT)) 
@@ -15,12 +14,12 @@ class DisplayGame:
             "map": pygame.Rect(MENU_WIDTH, 0, MAP_WIDTH, SCREEN_HEIGHT)
         }
 
-    def display(self, selected_character, teams, turn):
+    def display(self, screen, selected_character, teams, turn):
         self.map.draw(self.map_surface, selected_character)
         self.menu.draw(self.menu_surface, teams, turn)
 
-        self.screen.blit(self.menu_surface, self.rect_dict["menu"].topleft)
-        self.screen.blit(self.map_surface, self.rect_dict["map"].topleft)
+        screen.blit(self.menu_surface, self.rect_dict["menu"].topleft)
+        screen.blit(self.map_surface, self.rect_dict["map"].topleft)
         pygame.display.flip()
 
     def find_surface(self, pos):

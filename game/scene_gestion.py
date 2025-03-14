@@ -3,6 +3,8 @@ from .home_page import HomePage
 from .end_page import EndPage
 from .config import TEAMS, FPS, SCREEN_WIDTH, SCREEN_HEIGHT
 from .utils import Font
+from server.client import Client
+from server.network import Network
 
 import pygame
 import sys
@@ -18,7 +20,7 @@ class SceneGestion:
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pygame.display.set_caption("super game !")
 
-        self.home_page = HomePage(self.screen)
+        self.home_page = HomePage()
         self.current_scene = self.home_page
 
         Font.load()
@@ -27,7 +29,6 @@ class SceneGestion:
         clock = pygame.time.Clock()
         running = True
         while running:
-            self.screen.fill((0,0,0))
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -35,15 +36,26 @@ class SceneGestion:
                 else:
                     change = self.current_scene.handle_event(event)
                     self.change_scene(change)
-            self.current_scene.display()
+            if isinstance(self.current_scene, Client):
+                change = self.current_scene.update_game()
+                self.change_scene(change)
+            self.screen.fill((0,0,0))
+            self.current_scene.display(self.screen)
             clock.tick(FPS)
 
     def change_scene(self, change):
         if change == "game":
-            self.current_scene = Game(TEAMS, self.screen)
+            self.current_scene = Game(TEAMS)
+        elif change == "online":
+            try:
+                network = Network()
+                self.current_scene = Client(network)
+                print("client create")
+            except:
+                print("Couldn't connect to server")
         elif change == "Red":
-            self.current_scene = EndPage(self.screen, "Red")
+            self.current_scene = EndPage("Red")
         elif change == "Blue":
-            self.current_scene = EndPage(self.screen, "Blue")
+            self.current_scene = EndPage("Blue")
         elif change == "home":
             self.current_scene = self.home_page

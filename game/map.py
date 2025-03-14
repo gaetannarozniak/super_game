@@ -3,12 +3,13 @@ from .generate_map import generate_map
 from collections import deque
 
 class Map:
-    def __init__(self):
+    def __init__(self, seed=None):
+        self.seed = seed
         self.nb_gold = (N_TILES_X * N_TILES_Y) // 10
-        self.tiles = self.generate()
+        self.tiles = self.generate(self.seed)
     
-    def generate(self):
-        return generate_map()
+    def generate(self, seed):
+        return generate_map(seed=seed)
         
     def draw(self, figure, selected_character):
         accessible_tiles = []
