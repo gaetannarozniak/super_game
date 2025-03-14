@@ -5,6 +5,7 @@ from game.team import Team
 from game.map import Map
 from .game_rl import GameRL
 from .config_rl import GOLD_REWARD, LIFE_REWARD
+from .agent import RandomAgent
 from abc import ABC
 
 print("jeu")
@@ -61,8 +62,7 @@ class Obs:
 
 class Env:
 
-    def __init__(self, team_id):
-        self.team_id = team_id
+    def __init__(self):
         self.value_model = TeamValue(n_teams=len(self.game.get_teams()))
         self.game = GameRL() 
         self.action_types = self.game.get_action_types_names()
@@ -77,7 +77,8 @@ class Env:
 
 
     def reset(self):
-        pass
+        self.game = GameRL()
+        return self.get_game_obs()
 
     def step(self, action, team_id: int):
         prev_obs = self.get_game_obs()
@@ -90,5 +91,12 @@ class Env:
         obs = self.get_game_obs()
         value = self.value_model(obs, team_id)
         reward = value - prev_value + penalty
+        print(f"{team_id = }, {action_type = }, {action_tile = }, {reward = }")
         return obs, reward, False, False, None
 
+    def get_n_actions(self):
+        return self.n_action_types
+
+    def get_map_dimensions(self):
+        return self.map_dimensions
+        

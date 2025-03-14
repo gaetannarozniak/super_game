@@ -6,7 +6,7 @@ from .display_game_rl import DisplayGameRL
 from .config_rl import PENALTY
 
 class GameRL:
-    def __init__(self, list_teams=TEAMS, screen=None):
+    def __init__(self, screen=None):
         self.map = Map()
         self.teams = [Team(team_name) for team_name in TEAMS]
         self.selected_character = None
@@ -88,28 +88,3 @@ class GameRL:
     def get_map_dimensions(self):
         return self.map.get_dimensions()
     
-
-"""   
-class RunAgents:
-    def __init__(self, agent_1, agent_2):
-        self.agent_1 = agent_1
-        self.agent_2 = agent_2
-        screen = pygame.display.set_mode((MAP_WIDTH, MAP_HEIGHT))
-        self.game = GameRL(screen = screen)
-
-        pygame.init()
-        pygame.display.set_caption("Game")
-    
-    def run(self):
-        clock = pygame.time.Clock()
-        running = True
-        turn = 0
-        while running:
-            self.game.display()
-            if turn == 0:
-                action = self.agent_1.get_action(self.game.get_obs)
-            else:
-                action = self.agent_2.get_action(self.game)
-            self.game.handle_action(*action)
-            turn = (turn+1) % 2
-            clock.tick(FPS)"""
